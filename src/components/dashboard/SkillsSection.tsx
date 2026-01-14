@@ -1,16 +1,21 @@
-import { motion } from "framer-motion";
-import { Palette, Code2, Search, Sparkles, Database, Globe, Figma, Terminal } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { Palette, Code2, Search, Sparkles, Figma, Terminal, Lightbulb, MessageCircle, Users, Clock, Brain } from "lucide-react";
 
-const skills = [
-  { icon: Palette, label: "UI/UX Design" },
-  { icon: Figma, label: "Figma" },
-  { icon: Code2, label: "React" },
-  { icon: Terminal, label: "Python" },
+const coreSkills = [
+  { name: "UX/UI Design", percentage: 90, icon: Palette },
+  { name: "Graphic Design", percentage: 40, icon: Figma },
+  { name: "Frontend Development", percentage: 75, icon: Code2 },
+  { name: "Python", percentage: 50, icon: Terminal },
+  { name: "AI / Machine Learning", percentage: 65, icon: Brain },
 ];
 
-const progressSkills = [
-  { name: "Node.js", percentage: 90 },
-  { name: "PostgreSQL", percentage: 85 },
+const softSkills = [
+  { icon: Lightbulb, label: "Creative Thinking" },
+  { icon: MessageCircle, label: "Communication" },
+  { icon: Users, label: "Teamwork" },
+  { icon: Search, label: "Problem Solving" },
+  { icon: Clock, label: "Time Management" },
 ];
 
 const coreCapabilities = [
@@ -37,8 +42,12 @@ const coreCapabilities = [
 ];
 
 const SkillsSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
   return (
     <motion.div
+      ref={ref}
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.2 }}
@@ -49,46 +58,53 @@ const SkillsSection = () => {
         My <span className="text-primary">Skills</span>
       </h3>
       <p className="text-sm text-muted-foreground mb-6">
-        Tools & technologies I work with
+        Core competencies & technologies
       </p>
 
-      {/* Skill Icons Grid */}
-      <div className="grid grid-cols-4 gap-3 mb-8">
-        {skills.map((skill, index) => (
+      {/* Core Skills Progress Bars */}
+      <div className="space-y-5 mb-8">
+        {coreSkills.map((skill, index) => (
           <motion.div
-            key={skill.label}
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.3 + index * 0.05 }}
-            className="skill-card"
+            key={skill.name}
+            initial={{ x: -20, opacity: 0 }}
+            animate={isInView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 + index * 0.1 }}
           >
-            <skill.icon className="w-6 h-6 text-foreground mx-auto mb-2" />
-            <span className="text-xs text-muted-foreground">{skill.label}</span>
+            <div className="flex justify-between items-center mb-2">
+              <div className="flex items-center gap-2">
+                <skill.icon className="w-4 h-4 text-primary" />
+                <span className="text-sm text-foreground font-medium">{skill.name}</span>
+              </div>
+              <span className="text-sm text-primary font-semibold">{skill.percentage}%</span>
+            </div>
+            <div className="progress-bar h-2.5">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={isInView ? { width: `${skill.percentage}%` } : { width: 0 }}
+                transition={{ duration: 1, delay: 0.3 + index * 0.1, ease: "easeOut" }}
+                className="progress-fill"
+              />
+            </div>
           </motion.div>
         ))}
       </div>
 
-      {/* Progress Skills */}
-      <div className="space-y-4 mb-8">
-        {progressSkills.map((skill, index) => (
+      {/* Divider */}
+      <div className="border-t border-border/50 my-6" />
+
+      {/* Soft Skills */}
+      <h4 className="text-sm font-semibold text-foreground mb-4">Soft Skills</h4>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mb-8">
+        {softSkills.map((skill, index) => (
           <motion.div
-            key={skill.name}
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }}
+            key={skill.label}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
+            transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
+            className="soft-skill-card p-3 rounded-xl bg-secondary/30 text-center transition-all duration-300 hover:bg-secondary/50 hover:scale-105"
           >
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm text-foreground font-medium">{skill.name}</span>
-              <span className="text-sm text-primary">{skill.percentage}%</span>
-            </div>
-            <div className="progress-bar">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${skill.percentage}%` }}
-                transition={{ duration: 0.8, delay: 0.5 + index * 0.1 }}
-                className="progress-fill"
-              />
-            </div>
+            <skill.icon className="w-5 h-5 text-primary mx-auto mb-1.5" />
+            <span className="text-xs text-muted-foreground">{skill.label}</span>
           </motion.div>
         ))}
       </div>
@@ -103,9 +119,9 @@ const SkillsSection = () => {
           <motion.div
             key={cap.title}
             initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.5 + index * 0.05 }}
-            className="p-3 rounded-xl bg-secondary/30 hover:bg-secondary/50 transition-colors"
+            animate={isInView ? { y: 0, opacity: 1 } : { y: 10, opacity: 0 }}
+            transition={{ duration: 0.3, delay: 0.6 + index * 0.05 }}
+            className="capability-card p-3 rounded-xl bg-secondary/30 transition-all duration-300 hover:bg-secondary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
           >
             <cap.icon className="w-5 h-5 text-primary mb-2" />
             <h5 className="text-sm font-medium text-foreground mb-1">{cap.title}</h5>

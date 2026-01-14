@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Sidebar from "@/components/dashboard/Sidebar";
+import MobileBottomNav from "@/components/dashboard/MobileBottomNav";
 import ProfileCard from "@/components/dashboard/ProfileCard";
 import IntroSection from "@/components/dashboard/IntroSection";
 import SkillsSection from "@/components/dashboard/SkillsSection";
@@ -37,9 +38,12 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+      {/* Desktop/Tablet Sidebar */}
+      <div className="hidden md:block">
+        <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+      </div>
       
-      <main className="ml-20 md:ml-24 min-h-screen p-4 md:p-6 lg:p-8">
+      <main className="md:ml-20 lg:ml-24 min-h-screen p-4 md:p-6 lg:p-8 pb-24 md:pb-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-[340px_1fr] gap-6">
             {/* Left Column - Profile Card */}
@@ -47,13 +51,16 @@ const DashboardLayout = () => {
               <ProfileCard onContactClick={() => setActiveSection("contact")} />
             </div>
 
-            {/* Right Column - Content */}
-            <div className="custom-scrollbar">
+            {/* Right Column - Content with custom scrollbar */}
+            <div className="custom-scrollbar lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto lg:pr-2">
               {renderContent()}
             </div>
           </div>
         </div>
       </main>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav activeSection={activeSection} onSectionChange={setActiveSection} />
     </div>
   );
 };

@@ -1,12 +1,19 @@
 import { motion } from "framer-motion";
-import { Github, Linkedin, Facebook, Instagram, FileText, Mail } from "lucide-react";
+import { Linkedin, Facebook, Instagram, FileText, Mail } from "lucide-react";
 import abdullahPortrait from "@/assets/abdullah-portrait.png";
 
+// Behance icon component
+const BehanceIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/>
+  </svg>
+);
+
 const socialLinks = [
-  { icon: Github, href: "#", label: "GitHub" },
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
+  { icon: BehanceIcon, href: "https://www.behance.net/abdullahaljamil1", label: "Behance" },
+  { icon: Instagram, href: "https://www.instagram.com/al.jamil.9022?igsh=MWViYXdhNGQ3NGMzdg==", label: "Instagram" },
+  { icon: Facebook, href: "https://www.facebook.com/share/1AAiyinQkK/", label: "Facebook" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/al-jamil-b817442a2/", label: "LinkedIn" },
 ];
 
 interface ProfileCardProps {
@@ -73,7 +80,9 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
             <a
               key={social.label}
               href={social.href}
-              className="p-2.5 rounded-xl bg-secondary/50 text-muted-foreground hover:text-primary hover:bg-secondary transition-all duration-200"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon-btn p-2.5 rounded-xl bg-secondary/50 text-muted-foreground transition-all duration-300"
               aria-label={social.label}
             >
               <social.icon className="w-4 h-4" />
@@ -92,15 +101,17 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
           className="grid grid-cols-2 gap-3 pt-4 border-t border-border/50"
         >
           <a
-            href="#"
-            className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-secondary/50 text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-200 text-sm font-medium"
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-gradient-animated flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium"
           >
             <FileText className="w-4 h-4" />
             <span>Resume</span>
           </a>
           <button
             onClick={onContactClick}
-            className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-primary-foreground hover:brightness-110 transition-all duration-200 text-sm font-medium"
+            className="btn-gradient-primary flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium"
           >
             <Mail className="w-4 h-4" />
             <span>Contact</span>
