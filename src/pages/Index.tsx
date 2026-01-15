@@ -1,5 +1,6 @@
-import { lazy, Suspense, useEffect, useCallback } from "react";
+import { lazy, Suspense, useEffect, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { ThemeProvider } from "@/hooks/use-theme";
 import Sidebar from "@/components/dashboard/Sidebar";
 import MobileBottomNav from "@/components/dashboard/MobileBottomNav";
@@ -8,6 +9,7 @@ import IntroSection from "@/components/dashboard/IntroSection";
 import SkillsSection from "@/components/dashboard/SkillsSection";
 import SEOHead from "@/components/layout/SEOHead";
 import Footer from "@/components/layout/Footer";
+import SplashScreen from "@/components/SplashScreen";
 
 // Lazy load non-critical sections for performance
 const AboutContent = lazy(() => import("@/components/dashboard/sections/AboutContent"));
@@ -160,9 +162,29 @@ interface IndexProps {
 }
 
 const Index = ({ section = "about" }: IndexProps) => {
+  const [showSplash, setShowSplash] = useState(() => {
+    // Check if splash was already shown this session
+    if (typeof window !== 'undefined') {
+      return !sessionStorage.getItem('splashShown');
+    }
+    return true;
+  });
+
+  const handleSplashComplete = useCallback(() => {
+    setShowSplash(false);
+    sessionStorage.setItem('splashShown', 'true');
+  }, []);
+
   return (
     <ThemeProvider>
-      <DashboardLayout section={section} />
+      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
+      <motion.div
+        initial={{ opacity: showSplash ? 0 : 1 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: showSplash ? 1.2 : 0 }}
+      >
+        <DashboardLayout section={section} />
+      </motion.div>
     </ThemeProvider>
   );
 };
