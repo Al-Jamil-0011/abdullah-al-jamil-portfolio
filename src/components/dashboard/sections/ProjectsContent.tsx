@@ -1,60 +1,33 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { ArrowUpRight, ChevronDown, ChevronUp, ExternalLink, Github } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowUpRight, ChevronDown, ChevronUp, ExternalLink, Github, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const projects = [
-  {
-    id: 1,
-    title: "HealthSync Dashboard",
-    category: "Product Design",
-    industry: "Healthcare",
-    description: "A comprehensive health management platform that helps users track their wellness journey through intuitive data visualization and personalized insights.",
-    tags: ["UX Research", "UI Design", "Design System", "Figma"],
-    thinking: "The challenge was making complex health data accessible. I focused on progressive disclosure—showing essential metrics first, with deeper insights available on demand. This reduced cognitive load while maintaining depth.",
-    image: "from-primary/20 to-secondary",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    id: 2,
-    title: "FinFlow Mobile App",
-    category: "UI/UX Design",
-    industry: "Fintech",
-    description: "A mobile banking experience that simplifies financial management for young professionals, featuring smart budgeting tools and seamless transaction flows.",
-    tags: ["Mobile Design", "User Research", "Prototyping", "React Native"],
-    thinking: "Users felt overwhelmed by traditional banking apps. I prioritized the '3-tap principle'—any common action should be completable in three taps or less. This dramatically improved task completion rates.",
-    image: "from-blue-500/20 to-secondary",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    id: 3,
-    title: "EduLearn Platform",
-    category: "Full Stack",
-    industry: "EdTech",
-    description: "An interactive learning platform connecting students with mentors, featuring real-time collaboration tools and progress tracking.",
-    tags: ["React", "TypeScript", "Node.js", "PostgreSQL"],
-    thinking: "Learning is personal. I designed flexible learning paths that adapt to individual pace while maintaining engagement through gamification elements without being distracting.",
-    image: "from-purple-500/20 to-secondary",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    id: 4,
-    title: "ShopEase E-commerce",
-    category: "Web Development",
-    industry: "E-commerce",
-    description: "A modern e-commerce platform with seamless checkout experience, product recommendations, and inventory management system.",
-    tags: ["Next.js", "Stripe", "Tailwind CSS", "Supabase"],
-    thinking: "Cart abandonment was the biggest challenge. I streamlined the checkout to just 3 steps and added trust signals at each stage, resulting in a 25% improvement in conversion.",
-    image: "from-orange-500/20 to-secondary",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail_url: string | null;
+  tags: string[];
+  category: string;
+  project_type: string;
+  external_link: string | null;
+  case_study_link: string | null;
+  thinking_process: string | null;
+}
+
+const gradientColors = [
+  "from-primary/20 to-secondary",
+  "from-blue-500/20 to-secondary",
+  "from-purple-500/20 to-secondary",
+  "from-orange-500/20 to-secondary",
+  "from-green-500/20 to-secondary",
+  "from-pink-500/20 to-secondary",
 ];
 
-const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: number }) => {
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const gradient = gradientColors[index % gradientColors.length];
 
   return (
     <motion.div
@@ -64,28 +37,44 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
       className="glass-card-hover overflow-hidden group"
     >
       {/* Project Preview */}
-      <div className={`h-48 bg-gradient-to-br ${project.image} relative overflow-hidden`}>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-muted-foreground/50 text-sm">Project Preview</span>
-        </div>
+      <div className={`h-48 bg-gradient-to-br ${gradient} relative overflow-hidden`}>
+        {project.thumbnail_url ? (
+          <img 
+            src={project.thumbnail_url} 
+            alt={project.title}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-muted-foreground/50 text-sm">Project Preview</span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60" />
         
         {/* Hover Actions */}
         <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <a
-            href={project.liveUrl}
-            className="p-2 rounded-lg bg-card/80 backdrop-blur-sm text-foreground hover:text-primary transition-colors"
-            aria-label="View live"
-          >
-            <ExternalLink className="w-4 h-4" />
-          </a>
-          <a
-            href={project.githubUrl}
-            className="p-2 rounded-lg bg-card/80 backdrop-blur-sm text-foreground hover:text-primary transition-colors"
-            aria-label="View source"
-          >
-            <Github className="w-4 h-4" />
-          </a>
+          {project.external_link && (
+            <a
+              href={project.external_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg bg-card/80 backdrop-blur-sm text-foreground hover:text-primary transition-colors"
+              aria-label="View live"
+            >
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          )}
+          {project.case_study_link && (
+            <a
+              href={project.case_study_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 rounded-lg bg-card/80 backdrop-blur-sm text-foreground hover:text-primary transition-colors"
+              aria-label="View case study"
+            >
+              <Github className="w-4 h-4" />
+            </a>
+          )}
         </div>
       </div>
 
@@ -94,7 +83,7 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
         <div className="flex items-start justify-between gap-3 mb-2">
           <div>
             <p className="text-xs text-primary font-medium mb-1">
-              {project.category} • {project.industry}
+              {project.category} • {project.project_type}
             </p>
             <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
               {project.title}
@@ -125,32 +114,65 @@ const ProjectCard = ({ project, index }: { project: typeof projects[0]; index: n
         </div>
 
         {/* Designer's Thinking */}
-        <div className="border-t border-border/50 pt-4">
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
-          >
-            <span className="font-medium">My thinking process</span>
-            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
-          
-          <motion.div
-            initial={false}
-            animate={{ height: isExpanded ? "auto" : 0, opacity: isExpanded ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <p className="pt-3 text-sm text-muted-foreground italic">
-              "{project.thinking}"
-            </p>
-          </motion.div>
-        </div>
+        {project.thinking_process && (
+          <div className="border-t border-border/50 pt-4">
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+            >
+              <span className="font-medium">My thinking process</span>
+              {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+            
+            <motion.div
+              initial={false}
+              animate={{ height: isExpanded ? "auto" : 0, opacity: isExpanded ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <p className="pt-3 text-sm text-muted-foreground italic">
+                "{project.thinking_process}"
+              </p>
+            </motion.div>
+          </div>
+        )}
       </div>
     </motion.div>
   );
 };
 
 const ProjectsContent = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .order('display_order', { ascending: true });
+
+        if (error) throw error;
+        setProjects(data || []);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -176,6 +198,12 @@ const ProjectsContent = () => {
           <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </div>
+
+      {projects.length === 0 && (
+        <div className="glass-card p-8 text-center">
+          <p className="text-muted-foreground">No projects available yet.</p>
+        </div>
+      )}
     </motion.div>
   );
 };

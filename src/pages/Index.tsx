@@ -16,6 +16,8 @@ const AboutContent = lazy(() => import("@/components/dashboard/sections/AboutCon
 const ResumeContent = lazy(() => import("@/components/dashboard/sections/ResumeContent"));
 const ProjectsContent = lazy(() => import("@/components/dashboard/sections/ProjectsContent"));
 const BlogsContent = lazy(() => import("@/components/dashboard/sections/BlogsContent"));
+const ServicesContent = lazy(() => import("@/components/dashboard/sections/ServicesContent"));
+const TestimonialsContent = lazy(() => import("@/components/dashboard/sections/TestimonialsContent"));
 const ContactContent = lazy(() => import("@/components/dashboard/sections/ContactContent"));
 
 // Loading fallback component
@@ -77,6 +79,24 @@ const DashboardLayout = ({ section }: DashboardLayoutProps) => {
             <article aria-labelledby="blogs-heading">
               <h1 id="blogs-heading" className="sr-only">Blog Posts & Articles</h1>
               <BlogsContent />
+            </article>
+          </Suspense>
+        );
+      case "services":
+        return (
+          <Suspense fallback={<SectionLoader />}>
+            <article aria-labelledby="services-heading">
+              <h1 id="services-heading" className="sr-only">Professional Services</h1>
+              <ServicesContent />
+            </article>
+          </Suspense>
+        );
+      case "testimonials":
+        return (
+          <Suspense fallback={<SectionLoader />}>
+            <article aria-labelledby="testimonials-heading">
+              <h1 id="testimonials-heading" className="sr-only">Client Testimonials</h1>
+              <TestimonialsContent />
             </article>
           </Suspense>
         );

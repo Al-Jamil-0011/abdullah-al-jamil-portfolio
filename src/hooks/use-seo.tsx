@@ -38,6 +38,16 @@ const seoConfig: Record<string, SEOProps> = {
     description: "Read design insights, UX tips, and industry thoughts from Abdullah Al Jamil. Stay updated with the latest in product design.",
     keywords: "UX Design Blog, Product Design Articles, Design Insights",
   },
+  services: {
+    title: "Services | Abdullah Al Jamil - Professional Design",
+    description: "Professional UI/UX Design, Product Design, Frontend Development, and Design Systems services by Abdullah Al Jamil.",
+    keywords: "UX Design Services, Product Design Consultation, Frontend Development",
+  },
+  testimonials: {
+    title: "Testimonials | Abdullah Al Jamil - Client Reviews",
+    description: "Read what clients say about working with Abdullah Al Jamil. Testimonials and reviews from satisfied partners.",
+    keywords: "Client Testimonials, UX Designer Reviews, Design Feedback",
+  },
   contact: {
     title: "Contact | Abdullah Al Jamil - Get in Touch",
     description: "Get in touch with Abdullah Al Jamil for freelance design projects, collaborations, or inquiries. Based in Dhaka, Bangladesh.",

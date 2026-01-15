@@ -25,6 +25,8 @@ const App = () => (
             <Route path="/resume" element={<Index section="resume" />} />
             <Route path="/projects" element={<Index section="projects" />} />
             <Route path="/blogs" element={<Index section="blogs" />} />
+            <Route path="/services" element={<Index section="services" />} />
+            <Route path="/testimonials" element={<Index section="testimonials" />} />
             <Route path="/contact" element={<Index section="contact" />} />
             
             {/* Catch-all 404 */}
