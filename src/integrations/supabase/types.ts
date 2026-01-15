@@ -14,7 +14,126 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      blogs: {
+        Row: {
+          category: string
+          content: string | null
+          cover_image_url: string | null
+          created_at: string
+          id: string
+          is_published: boolean | null
+          publish_date: string
+          read_time_minutes: number | null
+          summary: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          content?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          publish_date?: string
+          read_time_minutes?: number | null
+          summary: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          id?: string
+          is_published?: boolean | null
+          publish_date?: string
+          read_time_minutes?: number | null
+          summary?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_read: boolean | null
+          message: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_read?: boolean | null
+          message: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          case_study_link: string | null
+          category: string
+          created_at: string
+          description: string
+          display_order: number | null
+          external_link: string | null
+          id: string
+          is_published: boolean | null
+          project_type: string
+          tags: string[] | null
+          thinking_process: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          case_study_link?: string | null
+          category?: string
+          created_at?: string
+          description: string
+          display_order?: number | null
+          external_link?: string | null
+          id?: string
+          is_published?: boolean | null
+          project_type?: string
+          tags?: string[] | null
+          thinking_process?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          case_study_link?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          display_order?: number | null
+          external_link?: string | null
+          id?: string
+          is_published?: boolean | null
+          project_type?: string
+          tags?: string[] | null
+          thinking_process?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
