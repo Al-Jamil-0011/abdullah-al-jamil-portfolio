@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Mail, MapPin, Send, Phone, MessageSquare, Loader2, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import mapImage from "@/assets/map-dhaka.jpg";
 
 const GOOGLE_MAPS_LINK = "https://maps.app.goo.gl/9NoaEa57XRUWAQKe9";
 

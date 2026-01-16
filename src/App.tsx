@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,9 @@ const App = () => (
             <Route path="/services" element={<Index section="services" />} />
             <Route path="/testimonials" element={<Index section="testimonials" />} />
             <Route path="/contact" element={<Index section="contact" />} />
+            
+            {/* Admin Dashboard (separate site) */}
+            <Route path="/admin" element={<Admin />} />
             
             {/* Catch-all 404 */}
             <Route path="*" element={<NotFound />} />
