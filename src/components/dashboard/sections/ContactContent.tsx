@@ -143,10 +143,14 @@ const ContactContent = () => {
             className="glass-card-hover block overflow-hidden group cursor-pointer"
             aria-label="View location on Google Maps"
           >
-            <div className="relative h-40 bg-gradient-to-br from-primary/10 to-secondary overflow-hidden">
-              {/* Map placeholder with gradient overlay */}
-              <div className="absolute inset-0 bg-[url('https://maps.googleapis.com/maps/api/staticmap?center=Dhaka,Bangladesh&zoom=12&size=400x200&maptype=roadmap&style=feature:all|element:geometry|color:0x1a1a2e&style=feature:water|color:0x0f4c75&style=feature:road|element:geometry|color:0x3d5a80&key=placeholder')] bg-cover bg-center opacity-60" />
-              <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/50 to-transparent" />
+            <div className="relative h-40 overflow-hidden">
+              {/* Actual map image */}
+              <img 
+                src={mapImage}
+                alt="Map showing Dhaka, Bangladesh location"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/30 to-transparent" />
               
               {/* Map icon overlay */}
               <div className="absolute inset-0 flex items-center justify-center">
