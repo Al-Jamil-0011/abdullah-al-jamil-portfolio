@@ -1,3 +1,4 @@
+import React from "react";
 import { motion } from "framer-motion";
 import { Linkedin, Facebook, Instagram, FileText, Mail } from "lucide-react";
 import abdullahPortrait from "@/assets/abdullah-portrait.png";
@@ -34,29 +35,60 @@ interface ProfileCardProps {
 const ProfileCard = ({
   onContactClick
 }: ProfileCardProps) => {
-  return <motion.div initial={{
-    y: 20,
-    opacity: 0
-  }} animate={{
-    y: 0,
-    opacity: 1
-  }} transition={{
-    duration: 0.5
-  }} className="glass-card overflow-hidden h-full flex flex-col">
+  const [isHovered, setIsHovered] = React.useState(false);
+  
+  return <motion.div 
+    initial={{
+      y: 20,
+      opacity: 0
+    }} 
+    animate={{
+      y: 0,
+      opacity: 1
+    }} 
+    transition={{
+      duration: 0.5
+    }} 
+    className="glass-card overflow-hidden h-full flex flex-col"
+    onMouseEnter={() => setIsHovered(true)}
+    onMouseLeave={() => setIsHovered(false)}
+  >
       {/* Cover Image */}
       <div className="relative h-32 md:h-40 overflow-hidden">
-        {/* Premium background image */}
-        <img 
+        {/* Premium background image with parallax effect */}
+        <motion.img 
           src={profileBg} 
           alt="" 
-          className="absolute inset-0 w-full h-full object-cover blur-[2px] scale-105"
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.1, filter: "blur(2px)" }}
+          animate={{ 
+            scale: isHovered ? 1.15 : 1.1,
+            filter: isHovered ? "blur(1px)" : "blur(2px)",
+            y: isHovered ? -5 : 0
+          }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         />
-        {/* Dark overlay for depth */}
-        <div className="absolute inset-0 bg-black/40" />
+        {/* Dark overlay with hover effect */}
+        <motion.div 
+          className="absolute inset-0 bg-black/40"
+          animate={{ opacity: isHovered ? 0.3 : 0.4 }}
+          transition={{ duration: 0.4 }}
+        />
         {/* Gradient overlay for smooth transition */}
         <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30" />
+        {/* Subtle grid pattern with hover glow */}
+        <motion.div 
+          className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')]"
+          animate={{ opacity: isHovered ? 0.5 : 0.3 }}
+          transition={{ duration: 0.4 }}
+        />
+        {/* Hover glow effect */}
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.4 }}
+        />
       </div>
 
       {/* Avatar */}
