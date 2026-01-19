@@ -87,12 +87,15 @@ export type Database = {
         Row: {
           case_study_link: string | null
           category: string
+          completion_date: string | null
           created_at: string
           description: string
           display_order: number | null
           external_link: string | null
           id: string
           is_published: boolean | null
+          live_link: string | null
+          progress_status: string | null
           project_type: string
           tags: string[] | null
           thinking_process: string | null
@@ -103,12 +106,15 @@ export type Database = {
         Insert: {
           case_study_link?: string | null
           category?: string
+          completion_date?: string | null
           created_at?: string
           description: string
           display_order?: number | null
           external_link?: string | null
           id?: string
           is_published?: boolean | null
+          live_link?: string | null
+          progress_status?: string | null
           project_type?: string
           tags?: string[] | null
           thinking_process?: string | null
@@ -119,12 +125,15 @@ export type Database = {
         Update: {
           case_study_link?: string | null
           category?: string
+          completion_date?: string | null
           created_at?: string
           description?: string
           display_order?: number | null
           external_link?: string | null
           id?: string
           is_published?: boolean | null
+          live_link?: string | null
+          progress_status?: string | null
           project_type?: string
           tags?: string[] | null
           thinking_process?: string | null
