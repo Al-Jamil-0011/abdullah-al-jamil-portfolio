@@ -1,1 +1,4 @@
 project_id = "mnahmxveiblbdoganimb"
+
+[functions.import-projects]
+verify_jwt = false

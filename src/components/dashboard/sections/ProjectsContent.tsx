@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { ArrowUpRight, ChevronDown, ChevronUp, ExternalLink, Github, Loader2 } from "lucide-react";
+import { ArrowUpRight, ChevronDown, ChevronUp, ExternalLink, Github, Loader2, Play, Calendar, CheckCircle, Clock, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Project {
@@ -14,6 +14,9 @@ interface Project {
   external_link: string | null;
   case_study_link: string | null;
   thinking_process: string | null;
+  progress_status: string | null;
+  completion_date: string | null;
+  live_link: string | null;
 }
 
 const gradientColors = [
@@ -25,17 +28,64 @@ const gradientColors = [
   "from-pink-500/20 to-secondary",
 ];
 
+const getStatusConfig = (status: string | null) => {
+  const s = (status || '').toLowerCase();
+  if (s.includes('live')) {
+    return { 
+      color: 'bg-green-500/20 text-green-400 border-green-500/30', 
+      icon: Zap,
+      label: 'Live'
+    };
+  }
+  if (s.includes('complete') || s.includes('complate')) {
+    return { 
+      color: 'bg-blue-500/20 text-blue-400 border-blue-500/30', 
+      icon: CheckCircle,
+      label: 'Complete'
+    };
+  }
+  if (s.includes('running') || s.includes('runing')) {
+    return { 
+      color: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30', 
+      icon: Clock,
+      label: 'Running'
+    };
+  }
+  return { 
+    color: 'bg-muted text-muted-foreground border-muted', 
+    icon: Clock,
+    label: status || 'Processing'
+  };
+};
+
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const gradient = gradientColors[index % gradientColors.length];
+  const statusConfig = getStatusConfig(project.progress_status);
+  const StatusIcon = statusConfig.icon;
+  const liveProjectLink = project.live_link || project.external_link;
 
   return (
     <motion.div
       initial={{ y: 30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="glass-card-hover overflow-hidden group"
+      className="glass-card-hover overflow-hidden group relative"
     >
+      {/* Live Project Icon - Corner Badge */}
+      {liveProjectLink && (
+        <a
+          href={liveProjectLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute top-3 right-3 z-20 p-2.5 rounded-xl bg-primary text-primary-foreground shadow-lg hover:scale-110 hover:shadow-primary/30 transition-all duration-300"
+          aria-label="View live project"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Play className="w-4 h-4 fill-current" />
+        </a>
+      )}
+
       {/* Project Preview */}
       <div className={`h-48 bg-gradient-to-br ${gradient} relative overflow-hidden`}>
         {project.thumbnail_url ? (
@@ -51,19 +101,16 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent opacity-60" />
         
+        {/* Status Badge */}
+        <div className="absolute bottom-4 left-4">
+          <span className={`inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border ${statusConfig.color}`}>
+            <StatusIcon className="w-3 h-3" />
+            {statusConfig.label}
+          </span>
+        </div>
+
         {/* Hover Actions */}
-        <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          {project.external_link && (
-            <a
-              href={project.external_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-card/80 backdrop-blur-sm text-foreground hover:text-primary transition-colors"
-              aria-label="View live"
-            >
-              <ExternalLink className="w-4 h-4" />
-            </a>
-          )}
+        <div className="absolute top-4 left-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           {project.case_study_link && (
             <a
               href={project.case_study_link}
@@ -81,37 +128,49 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
       {/* Content */}
       <div className="p-5">
         <div className="flex items-start justify-between gap-3 mb-2">
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="text-xs text-primary font-medium mb-1">
               {project.category} • {project.project_type}
             </p>
-            <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+            <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors truncate">
               {project.title}
             </h4>
           </div>
-          <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+          {liveProjectLink && (
+            <ArrowUpRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all flex-shrink-0" />
+          )}
         </div>
 
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
           {project.description}
         </p>
 
+        {/* Completion Date */}
+        {project.completion_date && (
+          <div className="flex items-center gap-2 text-xs text-muted-foreground mb-4">
+            <Calendar className="w-3.5 h-3.5" />
+            <span>{project.completion_date}</span>
+          </div>
+        )}
+
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {project.tags.slice(0, 3).map((tag) => (
-            <span
-              key={tag}
-              className="text-xs px-2.5 py-1 rounded-lg bg-secondary/50 text-muted-foreground"
-            >
-              {tag}
-            </span>
-          ))}
-          {project.tags.length > 3 && (
-            <span className="text-xs px-2.5 py-1 rounded-lg bg-secondary/50 text-muted-foreground">
-              +{project.tags.length - 3}
-            </span>
-          )}
-        </div>
+        {project.tags && project.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {project.tags.slice(0, 3).map((tag) => (
+              <span
+                key={tag}
+                className="text-xs px-2.5 py-1 rounded-lg bg-secondary/50 text-muted-foreground"
+              >
+                {tag}
+              </span>
+            ))}
+            {project.tags.length > 3 && (
+              <span className="text-xs px-2.5 py-1 rounded-lg bg-secondary/50 text-muted-foreground">
+                +{project.tags.length - 3}
+              </span>
+            )}
+          </div>
+        )}
 
         {/* Designer's Thinking */}
         {project.thinking_process && (
