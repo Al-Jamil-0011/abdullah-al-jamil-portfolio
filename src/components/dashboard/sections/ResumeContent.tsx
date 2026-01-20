@@ -34,7 +34,7 @@ const education = [
     degree: "B.Sc. in Computer Science & Engineering",
     institution: "Green University of Bangladesh",
     period: "2020 - 2024",
-    gpa: "3.75/4.00",
+    gpa: "2.88",
     description: "Focused on software engineering, human-computer interaction, and modern web technologies.",
   },
   {
