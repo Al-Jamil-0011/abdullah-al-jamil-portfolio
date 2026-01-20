@@ -48,7 +48,7 @@ const education = [
     degree: "Secondary School Certificate (SSC)",
     institution: "Rostom Ali Golundaz School",
     period: "2015 - 2017",
-    gpa: "3.67",
+    gpa: "5.00/5.00",
     description: "Science group with excellent academic performance.",
   },
 ];
