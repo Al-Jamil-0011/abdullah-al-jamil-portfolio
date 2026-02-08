@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Mail, MapPin, Send, Phone, MessageSquare, Loader2, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -14,19 +14,38 @@ const ContactContent = () => {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const lastSubmitRef = useRef<number>(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Prevent duplicate submissions (3s cooldown)
+    const now = Date.now();
+    if (now - lastSubmitRef.current < 3000) return;
+    lastSubmitRef.current = now;
+
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
+      // Save to database
+      const { error: dbError } = await supabase
         .from('contact_messages')
         .insert({
           name: formData.name.trim(),
           email: formData.email.trim(),
           message: formData.message.trim()
         });
+
+      if (dbError) console.error("DB save error:", dbError);
+
+      // Send email via edge function
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim()
+        }
+      });
 
       if (error) throw error;
 
