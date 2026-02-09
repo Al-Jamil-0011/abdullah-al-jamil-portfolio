@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ThemeProvider } from "@/hooks/use-theme";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FolderKanban, BookOpen, ArrowLeft, LogOut } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { useAdminAuth } from "@/hooks/use-admin-auth";
 import AdminGuard from "@/components/admin/AdminGuard";
+import AdminSidebar from "@/components/admin/AdminSidebar";
+import DashboardHome from "@/components/admin/DashboardHome";
 import ProjectsAdmin from "@/components/admin/ProjectsAdmin";
 import BlogsAdmin from "@/components/admin/BlogsAdmin";
+import ServicesAdmin from "@/components/admin/ServicesAdmin";
+import TestimonialsAdmin from "@/components/admin/TestimonialsAdmin";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState("projects");
+  const [activeSection, setActiveSection] = useState("home");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, signOut } = useAdminAuth();
   const navigate = useNavigate();
 
@@ -20,67 +24,97 @@ const AdminDashboard = () => {
     navigate("/admin/login");
   };
 
+  const handleSectionChange = (section: string) => {
+    setActiveSection(section);
+    setMobileMenuOpen(false);
+  };
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case "home":
+        return <DashboardHome />;
+      case "projects":
+        return <ProjectsAdmin />;
+      case "services":
+        return <ServicesAdmin />;
+      case "blogs":
+        return <BlogsAdmin />;
+      case "testimonials":
+        return <TestimonialsAdmin />;
+      default:
+        return <DashboardHome />;
+    }
+  };
+
+  const sectionTitles: Record<string, string> = {
+    home: "Dashboard",
+    projects: "Projects",
+    services: "Services",
+    blogs: "Blogs",
+    testimonials: "Testimonials",
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass-card border-b border-border/50">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link 
-              to="/about" 
-              className="p-2 rounded-xl bg-secondary/50 text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
-              aria-label="Back to portfolio"
+    <div className="min-h-screen bg-background flex">
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block">
+        <AdminSidebar
+          activeSection={activeSection}
+          onSectionChange={handleSectionChange}
+          onLogout={handleLogout}
+        />
+      </div>
+
+      {/* Mobile Sidebar Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setMobileMenuOpen(false)} />
+          <div className="relative w-64 h-full">
+            <AdminSidebar
+              activeSection={activeSection}
+              onSectionChange={handleSectionChange}
+              onLogout={handleLogout}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        {/* Top Bar */}
+        <header className="sticky top-0 z-40 bg-card/80 backdrop-blur-md border-b border-border/50 px-4 md:px-8 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(true)}
             >
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
+              <Menu className="w-5 h-5" />
+            </Button>
             <div>
-              <h1 className="text-xl font-semibold text-foreground">Admin Dashboard</h1>
-              <p className="text-sm text-muted-foreground">
-                Signed in as <span className="text-foreground">{user?.email}</span>
+              <h1 className="text-lg font-semibold text-foreground">
+                {sectionTitles[activeSection] || "Dashboard"}
+              </h1>
+              <p className="text-xs text-muted-foreground hidden sm:block">
+                {user?.email}
               </p>
             </div>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleLogout}
-            className="flex items-center gap-2"
+        </header>
+
+        {/* Content Area */}
+        <main className="flex-1 p-4 md:p-8">
+          <motion.div
+            key={activeSection}
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
           >
-            <LogOut className="w-4 h-4" />
-            Sign Out
-          </Button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto p-4 md:p-6 lg:p-8">
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-md grid-cols-2 mb-8">
-              <TabsTrigger value="projects" className="flex items-center gap-2">
-                <FolderKanban className="w-4 h-4" />
-                Projects
-              </TabsTrigger>
-              <TabsTrigger value="blogs" className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4" />
-                Blogs
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="projects">
-              <ProjectsAdmin />
-            </TabsContent>
-
-            <TabsContent value="blogs">
-              <BlogsAdmin />
-            </TabsContent>
-          </Tabs>
-        </motion.div>
-      </main>
+            {renderContent()}
+          </motion.div>
+        </main>
+      </div>
     </div>
   );
 };

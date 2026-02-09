@@ -1,45 +1,35 @@
 import { motion } from "framer-motion";
-import { Palette, Layout, Code, Layers, MessageCircle, ArrowUpRight } from "lucide-react";
+import { Palette, Layout, Code, Layers, MessageCircle, Briefcase, Globe, Smartphone, PenTool, Zap, ArrowUpRight, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
-const services = [
-  {
-    id: 1,
-    title: "UI/UX Design",
-    description: "Creating intuitive and visually stunning user interfaces that drive engagement and deliver exceptional user experiences.",
-    icon: Palette,
-    gradient: "from-primary/20 to-secondary",
-  },
-  {
-    id: 2,
-    title: "Product Design",
-    description: "End-to-end product design from research and strategy to final implementation, ensuring cohesive and impactful digital products.",
-    icon: Layout,
-    gradient: "from-blue-500/20 to-secondary",
-  },
-  {
-    id: 3,
-    title: "Frontend Development",
-    description: "Building responsive, performant, and accessible web applications using modern technologies like React, TypeScript, and Tailwind CSS.",
-    icon: Code,
-    gradient: "from-purple-500/20 to-secondary",
-  },
-  {
-    id: 4,
-    title: "Design Systems",
-    description: "Developing scalable and consistent design systems that streamline workflows and maintain brand coherence across all touchpoints.",
-    icon: Layers,
-    gradient: "from-orange-500/20 to-secondary",
-  },
-  {
-    id: 5,
-    title: "Consultation",
-    description: "Strategic design consultation to help you identify opportunities, solve complex problems, and achieve your business goals.",
-    icon: MessageCircle,
-    gradient: "from-green-500/20 to-secondary",
-  },
+const iconMap: Record<string, React.ElementType> = {
+  Palette, Layout, Code, Layers, MessageCircle, Briefcase, Globe, Smartphone, PenTool, Zap,
+};
+
+const gradients = [
+  "from-primary/20 to-secondary",
+  "from-blue-500/20 to-secondary",
+  "from-purple-500/20 to-secondary",
+  "from-orange-500/20 to-secondary",
+  "from-green-500/20 to-secondary",
+  "from-pink-500/20 to-secondary",
 ];
 
 const ServicesContent = () => {
+  const { data: services, isLoading } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("services")
+        .select("*")
+        .eq("is_published", true)
+        .order("display_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -60,34 +50,44 @@ const ServicesContent = () => {
       </div>
 
       {/* Services Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {services.map((service, index) => (
-          <motion.div
-            key={service.id}
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="glass-card-hover p-6 group cursor-pointer"
-          >
-            {/* Icon */}
-            <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-              <service.icon className="w-7 h-7 text-primary" />
-            </div>
-
-            {/* Content */}
-            <div className="flex items-start justify-between gap-2 mb-3">
-              <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                {service.title}
-              </h4>
-              <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all" />
-            </div>
-
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {service.description}
-            </p>
-          </motion.div>
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      ) : services && services.length > 0 ? (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {services.map((service, index) => {
+            const IconComponent = iconMap[service.icon || "Palette"] || Palette;
+            const gradient = gradients[index % gradients.length];
+            return (
+              <motion.div
+                key={service.id}
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="glass-card-hover p-6 group cursor-pointer"
+              >
+                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                  <IconComponent className="w-7 h-7 text-primary" />
+                </div>
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+                    {service.title}
+                  </h4>
+                  <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all" />
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {service.description}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="glass-card p-8 text-center">
+          <p className="text-muted-foreground">Services coming soon.</p>
+        </div>
+      )}
 
       {/* CTA Section */}
       <motion.div

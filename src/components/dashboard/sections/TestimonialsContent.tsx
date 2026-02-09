@@ -1,46 +1,22 @@
 import { motion } from "framer-motion";
-import { Quote, Star } from "lucide-react";
-
-const testimonials = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    role: "CEO",
-    company: "TechStart Inc.",
-    content: "Working with Abdullah was an absolute pleasure. His attention to detail and understanding of user experience transformed our product completely. The results exceeded our expectations.",
-    rating: 5,
-    avatar: "SJ",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    role: "Product Manager",
-    company: "InnovateLab",
-    content: "Abdullah's design thinking approach helped us identify and solve problems we didn't even know existed. His work on our dashboard increased user engagement by 40%.",
-    rating: 5,
-    avatar: "MC",
-  },
-  {
-    id: 3,
-    name: "Emily Rodriguez",
-    role: "Founder",
-    company: "HealthTech Solutions",
-    content: "The design system Abdullah created for us has become the backbone of our product development. It's scalable, intuitive, and beautifully crafted.",
-    rating: 5,
-    avatar: "ER",
-  },
-  {
-    id: 4,
-    name: "David Park",
-    role: "CTO",
-    company: "FinanceFlow",
-    content: "His ability to bridge design and development is remarkable. Abdullah delivered a pixel-perfect implementation that was also technically sound and performant.",
-    rating: 5,
-    avatar: "DP",
-  },
-];
+import { Quote, Star, Loader2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const TestimonialsContent = () => {
+  const { data: testimonials, isLoading } = useQuery({
+    queryKey: ["testimonials"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("testimonials")
+        .select("*")
+        .eq("is_published", true)
+        .order("display_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -61,51 +37,69 @@ const TestimonialsContent = () => {
       </div>
 
       {/* Testimonials Grid */}
-      <div className="grid md:grid-cols-2 gap-5">
-        {testimonials.map((testimonial, index) => (
-          <motion.div
-            key={testimonial.id}
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="glass-card-hover p-6 relative"
-          >
-            {/* Quote Icon */}
-            <div className="absolute top-6 right-6 opacity-10">
-              <Quote className="w-12 h-12 text-primary" />
-            </div>
-
-            {/* Rating */}
-            <div className="flex gap-1 mb-4">
-              {Array.from({ length: testimonial.rating }).map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-              ))}
-            </div>
-
-            {/* Content */}
-            <p className="text-muted-foreground mb-6 leading-relaxed italic relative z-10">
-              "{testimonial.content}"
-            </p>
-
-            {/* Author */}
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary flex items-center justify-center">
-                <span className="text-sm font-semibold text-primary">
-                  {testimonial.avatar}
-                </span>
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      ) : testimonials && testimonials.length > 0 ? (
+        <div className="grid md:grid-cols-2 gap-5">
+          {testimonials.map((testimonial, index) => (
+            <motion.div
+              key={testimonial.id}
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="glass-card-hover p-6 relative"
+            >
+              {/* Quote Icon */}
+              <div className="absolute top-6 right-6 opacity-10">
+                <Quote className="w-12 h-12 text-primary" />
               </div>
-              <div>
-                <h4 className="font-semibold text-foreground">
-                  {testimonial.name}
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  {testimonial.role}, {testimonial.company}
-                </p>
+
+              {/* Rating */}
+              <div className="flex gap-1 mb-4">
+                {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                ))}
               </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+
+              {/* Content */}
+              <p className="text-muted-foreground mb-6 leading-relaxed italic relative z-10">
+                "{testimonial.feedback}"
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-4">
+                {testimonial.avatar_url ? (
+                  <img
+                    src={testimonial.avatar_url}
+                    alt={testimonial.client_name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary flex items-center justify-center">
+                    <span className="text-sm font-semibold text-primary">
+                      {testimonial.client_name.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+                    </span>
+                  </div>
+                )}
+                <div>
+                  <h4 className="font-semibold text-foreground">
+                    {testimonial.client_name}
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    {testimonial.client_role}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <div className="glass-card p-8 text-center">
+          <p className="text-muted-foreground">Testimonials coming soon.</p>
+        </div>
+      )}
 
       {/* Trust Indicators */}
       <motion.div
