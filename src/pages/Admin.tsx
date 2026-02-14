@@ -10,6 +10,7 @@ import ProjectsAdmin from "@/components/admin/ProjectsAdmin";
 import BlogsAdmin from "@/components/admin/BlogsAdmin";
 import ServicesAdmin from "@/components/admin/ServicesAdmin";
 import TestimonialsAdmin from "@/components/admin/TestimonialsAdmin";
+import CertificatesAdmin from "@/components/admin/CertificatesAdmin";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -41,6 +42,8 @@ const AdminDashboard = () => {
         return <BlogsAdmin />;
       case "testimonials":
         return <TestimonialsAdmin />;
+      case "certificates":
+        return <CertificatesAdmin />;
       default:
         return <DashboardHome />;
     }
@@ -52,6 +55,7 @@ const AdminDashboard = () => {
     services: "Services",
     blogs: "Blogs",
     testimonials: "Testimonials",
+    certificates: "Certificates",
   };
 
   return (
