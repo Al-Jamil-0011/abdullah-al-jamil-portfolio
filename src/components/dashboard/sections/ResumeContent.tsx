@@ -1,6 +1,8 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { MapPin, Calendar, Award, GraduationCap, Briefcase, Trophy } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { MapPin, Calendar, Award, GraduationCap, Briefcase, Trophy, ExternalLink } from "lucide-react";
 
 const experiences = [
   {
@@ -53,11 +55,6 @@ const education = [
   },
 ];
 
-const certificates = [
-  { name: "Coming Soon", issuer: "Certificate placeholder", year: "2024", status: "upcoming" },
-  { name: "Coming Soon", issuer: "Certificate placeholder", year: "2024", status: "upcoming" },
-  { name: "Coming Soon", issuer: "Certificate placeholder", year: "2024", status: "upcoming" },
-];
 
 const achievements = [
   { title: "30+ Projects Completed", description: "Successfully delivered various design and development projects" },
@@ -75,6 +72,18 @@ const ResumeContent = () => {
   const eduInView = useInView(eduRef, { once: true, margin: "-50px" });
   const certInView = useInView(certRef, { once: true, margin: "-50px" });
   const achieveInView = useInView(achieveRef, { once: true, margin: "-50px" });
+
+  const { data: certificates = [] } = useQuery({
+    queryKey: ["certificates"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("certificates")
+        .select("*")
+        .order("display_order", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
 
   return (
     <motion.div
@@ -170,27 +179,47 @@ const ResumeContent = () => {
         </div>
         <div className="w-12 h-1 bg-primary rounded-full mb-6" />
 
-        <div className="grid md:grid-cols-3 gap-3">
-          {certificates.map((cert, index) => (
-            <motion.div
-              key={index}
-              initial={{ y: 10, opacity: 0 }}
-              animate={certInView ? { y: 0, opacity: 1 } : { y: 10, opacity: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="p-4 rounded-xl bg-secondary/30 border-2 border-dashed border-border/50 transition-all duration-300 hover:border-primary/30 hover:bg-secondary/50"
-            >
-              <div className="text-center">
-                <Award className="w-8 h-8 text-muted-foreground/50 mx-auto mb-2" />
-                <h4 className="text-sm font-medium text-muted-foreground">
-                  {cert.name}
-                </h4>
-                <p className="text-xs text-muted-foreground/70 mt-1">
-                  Upload ready
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {certificates.length === 0 ? (
+          <p className="text-sm text-muted-foreground text-center py-8">No certificates added yet.</p>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-4">
+            {certificates.map((cert, index) => (
+              <motion.div
+                key={cert.id}
+                initial={{ y: 15, opacity: 0 }}
+                animate={certInView ? { y: 0, opacity: 1 } : { y: 15, opacity: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.12 }}
+                className="group rounded-xl bg-secondary/30 border border-border/50 overflow-hidden transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5 hover:scale-[1.02]"
+              >
+                {cert.image_url ? (
+                  <img src={cert.image_url} alt={cert.title} className="w-full h-36 object-cover" />
+                ) : (
+                  <div className="w-full h-36 bg-secondary/50 flex items-center justify-center">
+                    <Award className="w-10 h-10 text-muted-foreground/30" />
+                  </div>
+                )}
+                <div className="p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h4 className="text-sm font-semibold text-foreground">{cert.title}</h4>
+                      {cert.organization && (
+                        <p className="text-xs text-primary mt-0.5">{cert.organization}</p>
+                      )}
+                    </div>
+                    {cert.credential_link && (
+                      <a href={cert.credential_link} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0">
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
+                  {cert.issue_date && (
+                    <p className="text-xs text-muted-foreground/70 mt-2">{cert.issue_date}</p>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Achievements */}

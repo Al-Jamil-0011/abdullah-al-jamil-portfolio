@@ -1,4 +1,4 @@
-import { FolderKanban, BookOpen, Briefcase, MessageSquareQuote, LayoutDashboard, LogOut } from "lucide-react";
+import { FolderKanban, BookOpen, Briefcase, MessageSquareQuote, LayoutDashboard, LogOut, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AdminSidebarProps {
@@ -13,6 +13,7 @@ const navItems = [
   { id: "services", label: "Services", icon: Briefcase },
   { id: "blogs", label: "Blogs", icon: BookOpen },
   { id: "testimonials", label: "Testimonials", icon: MessageSquareQuote },
+  { id: "certificates", label: "Certificates", icon: Award },
 ];
 
 const AdminSidebar = ({ activeSection, onSectionChange, onLogout }: AdminSidebarProps) => {
