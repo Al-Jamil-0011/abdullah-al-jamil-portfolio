@@ -9,54 +9,59 @@
 
 @layer base {
   :root {
-    /* Light mode - kept for completeness */
-    --background: 220 20% 97%;
-    --foreground: 220 20% 10%;
+    /* Light mode - Premium clean design */
+    --background: 220 20% 96%;
+    --foreground: 220 30% 12%;
 
-    --card: 220 20% 100%;
-    --card-foreground: 220 20% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 12%;
 
-    --popover: 220 20% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 12%;
 
-    /* AI Cyan Primary #93FFFE */
-    --primary: 179 99% 79%;
-    --primary-foreground: 220 25% 8%;
+    /* Darker teal primary for light mode contrast */
+    --primary: 179 80% 35%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 92%;
-    --secondary-foreground: 220 20% 20%;
+    --secondary: 220 15% 91%;
+    --secondary-foreground: 220 25% 18%;
 
-    --muted: 220 10% 90%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 220 12% 88%;
+    --muted-foreground: 220 12% 40%;
 
-    /* Matching accent to primary */
-    --accent: 179 99% 79%;
-    --accent-foreground: 220 25% 8%;
+    /* Accent matches primary */
+    --accent: 179 80% 35%;
+    --accent-foreground: 0 0% 100%;
 
-    --highlight: 179 99% 79%;
-    --highlight-foreground: 220 25% 8%;
+    --highlight: 179 80% 35%;
+    --highlight-foreground: 0 0% 100%;
 
     --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
-    --ring: 179 99% 79%;
+    --border: 220 15% 85%;
+    --input: 220 15% 85%;
+    --ring: 179 80% 35%;
 
     --radius: 0.75rem;
 
-    --sidebar-background: 220 20% 95%;
-    --sidebar-foreground: 220 20% 25%;
-    --sidebar-primary: 179 99% 79%;
-    --sidebar-primary-foreground: 220 25% 8%;
-    --sidebar-accent: 220 15% 90%;
-    --sidebar-accent-foreground: 220 20% 20%;
-    --sidebar-border: 220 15% 88%;
-    --sidebar-ring: 179 99% 79%;
+    --sidebar-background: 220 15% 94%;
+    --sidebar-foreground: 220 25% 20%;
+    --sidebar-primary: 179 80% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 89%;
+    --sidebar-accent-foreground: 220 25% 18%;
+    --sidebar-border: 220 15% 85%;
+    --sidebar-ring: 179 80% 35%;
     
     /* Gradient shadow tokens */
-    --primary-glow: 179 99% 79% / 0.4;
-    --primary-shadow: 0 8px 32px -8px hsl(179 99% 79% / 0.35);
+    --primary-glow: 179 80% 35% / 0.3;
+    --primary-shadow: 0 8px 32px -8px hsl(179 80% 35% / 0.25);
+
+    /* Glassmorphism tokens for light mode */
+    --glass-background: 0 0% 100% / 0.85;
+    --glass-border: 220 15% 12% / 0.08;
+    --glass-glow: 179 80% 35% / 0.15;
   }
 
   .dark {

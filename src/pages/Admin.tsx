@@ -11,6 +11,7 @@ import BlogsAdmin from "@/components/admin/BlogsAdmin";
 import ServicesAdmin from "@/components/admin/ServicesAdmin";
 import TestimonialsAdmin from "@/components/admin/TestimonialsAdmin";
 import CertificatesAdmin from "@/components/admin/CertificatesAdmin";
+import SiteContentAdmin from "@/components/admin/SiteContentAdmin";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -34,6 +35,8 @@ const AdminDashboard = () => {
     switch (activeSection) {
       case "home":
         return <DashboardHome />;
+      case "site-content":
+        return <SiteContentAdmin />;
       case "projects":
         return <ProjectsAdmin />;
       case "services":
@@ -51,6 +54,7 @@ const AdminDashboard = () => {
 
   const sectionTitles: Record<string, string> = {
     home: "Dashboard",
+    "site-content": "Site Content",
     projects: "Projects",
     services: "Services",
     blogs: "Blogs",

@@ -2,65 +2,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { MapPin, Calendar, Award, GraduationCap, Briefcase, Trophy, ExternalLink } from "lucide-react";
-
-const experiences = [
-  {
-    title: "Sr. UX/UI Designer",
-    company: "BDCalling IT Ltd.",
-    location: "Dhaka, Bangladesh",
-    period: "Present",
-    description: "Leading design initiatives for enterprise-level applications. Creating comprehensive design systems and conducting user research to improve product experiences.",
-    color: "bg-primary",
-  },
-  {
-    title: "UX/UI Designer Intern",
-    company: "CPSD Technology IT",
-    location: "Dhaka, Bangladesh",
-    period: "2023 - 2024",
-    description: "Designed intuitive interfaces for mobile and web applications. Collaborated with development teams to implement pixel-perfect UI components.",
-    color: "bg-primary/70",
-  },
-  {
-    title: "Python Django Intern",
-    company: "EDGE Project (BCC, ICT Division)",
-    location: "Dhaka, Bangladesh",
-    period: "2023",
-    description: "Developed web applications using Python Django framework. Gained hands-on experience in full-stack development and database management.",
-    color: "bg-primary/50",
-  },
-];
-
-const education = [
-  {
-    degree: "B.Sc. in Computer Science & Engineering",
-    institution: "Green University of Bangladesh",
-    period: "2020 - 2024",
-    gpa: "2.88/4.00",
-    description: "Focused on software engineering, human-computer interaction, and modern web technologies.",
-  },
-  {
-    degree: "Higher Secondary Certificate (HSC)",
-    institution: "Gaffargaon Govt. College",
-    period: "2017 - 2019",
-    gpa: "5.00/5.00",
-    description: "Science group with focus on Physics, Chemistry, and Mathematics.",
-  },
-  {
-    degree: "Secondary School Certificate (SSC)",
-    institution: "Rostom Ali Golundaz School",
-    period: "2015 - 2017",
-    gpa: "5.00/5.00",
-    description: "Science group with excellent academic performance.",
-  },
-];
-
-
-const achievements = [
-  { title: "30+ Projects Completed", description: "Successfully delivered various design and development projects" },
-  { title: "10+ Live Projects", description: "Currently maintaining and supporting live applications" },
-  { title: "22+ Happy Clients", description: "Building lasting relationships through quality work" },
-];
+import { useSiteContent } from "@/hooks/use-site-content";
+import { MapPin, Calendar, Award, GraduationCap, Briefcase, Trophy, ExternalLink, Loader2 } from "lucide-react";
 
 const ResumeContent = () => {
   const expRef = useRef(null);
@@ -73,6 +16,8 @@ const ResumeContent = () => {
   const certInView = useInView(certRef, { once: true, margin: "-50px" });
   const achieveInView = useInView(achieveRef, { once: true, margin: "-50px" });
 
+  const { data: resumeData, isLoading: loadingResume } = useSiteContent("resume");
+
   const { data: certificates = [] } = useQuery({
     queryKey: ["certificates"],
     queryFn: async () => {
@@ -84,6 +29,18 @@ const ResumeContent = () => {
       return data;
     },
   });
+
+  if (loadingResume) {
+    return (
+      <div className="flex items-center justify-center min-h-[300px]">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const experiences = resumeData?.experiences || [];
+  const education = resumeData?.education || [];
+  const achievements = resumeData?.achievements || [];
 
   return (
     <motion.div
@@ -103,9 +60,9 @@ const ResumeContent = () => {
         <div className="w-12 h-1 bg-primary rounded-full mb-6" />
 
         <div className="space-y-0">
-          {experiences.map((exp, index) => (
+          {experiences.map((exp: any, index: number) => (
             <motion.div
-              key={exp.title}
+              key={index}
               initial={{ x: -20, opacity: 0 }}
               animate={expInView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
               transition={{ duration: 0.4, delay: index * 0.15 }}
@@ -116,14 +73,8 @@ const ResumeContent = () => {
                 <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">{exp.title}</h4>
                 <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mb-2">
                   <span className="text-primary font-medium">{exp.company}</span>
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-3 h-3" />
-                    {exp.location}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    {exp.period}
-                  </span>
+                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{exp.location}</span>
+                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{exp.period}</span>
                 </div>
                 <p className="text-sm text-muted-foreground">{exp.description}</p>
               </div>
@@ -143,9 +94,9 @@ const ResumeContent = () => {
         <div className="w-12 h-1 bg-primary rounded-full mb-6" />
 
         <div className="space-y-4">
-          {education.map((edu, index) => (
+          {education.map((edu: any, index: number) => (
             <motion.div
-              key={edu.degree}
+              key={index}
               initial={{ x: -20, opacity: 0 }}
               animate={eduInView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
@@ -159,9 +110,11 @@ const ResumeContent = () => {
                     <span>{edu.period}</span>
                   </div>
                 </div>
-                <span className="px-3 py-1 rounded-lg bg-primary/20 text-primary text-sm font-semibold whitespace-nowrap">
-                  GPA: {edu.gpa}
-                </span>
+                {edu.gpa && (
+                  <span className="px-3 py-1 rounded-lg bg-primary/20 text-primary text-sm font-semibold whitespace-nowrap">
+                    GPA: {edu.gpa}
+                  </span>
+                )}
               </div>
               <p className="text-sm text-muted-foreground">{edu.description}</p>
             </motion.div>
@@ -233,9 +186,9 @@ const ResumeContent = () => {
         <div className="w-12 h-1 bg-primary rounded-full mb-6" />
 
         <div className="grid md:grid-cols-3 gap-4">
-          {achievements.map((achieve, index) => (
+          {achievements.map((achieve: any, index: number) => (
             <motion.div
-              key={achieve.title}
+              key={index}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={achieveInView ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
