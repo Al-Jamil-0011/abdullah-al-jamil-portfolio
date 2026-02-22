@@ -1,4 +1,4 @@
-import { FolderKanban, BookOpen, Briefcase, MessageSquareQuote, LayoutDashboard, LogOut, Award } from "lucide-react";
+import { FolderKanban, BookOpen, Briefcase, MessageSquareQuote, LayoutDashboard, LogOut, Award, FileEdit } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface AdminSidebarProps {
@@ -9,6 +9,7 @@ interface AdminSidebarProps {
 
 const navItems = [
   { id: "home", label: "Dashboard Home", icon: LayoutDashboard },
+  { id: "site-content", label: "Site Content", icon: FileEdit },
   { id: "projects", label: "Projects", icon: FolderKanban },
   { id: "services", label: "Services", icon: Briefcase },
   { id: "blogs", label: "Blogs", icon: BookOpen },
