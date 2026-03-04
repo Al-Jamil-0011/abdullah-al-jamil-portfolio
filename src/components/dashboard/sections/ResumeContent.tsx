@@ -3,7 +3,8 @@ import { useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/use-site-content";
-import { MapPin, Calendar, Award, GraduationCap, Briefcase, Trophy, ExternalLink, Loader2 } from "lucide-react";
+import { MapPin, Calendar, Award, GraduationCap, Briefcase, Trophy, ExternalLink } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ResumeContent = () => {
   const expRef = useRef(null);
@@ -30,14 +31,6 @@ const ResumeContent = () => {
     },
   });
 
-  if (loadingResume) {
-    return (
-      <div className="flex items-center justify-center min-h-[300px]">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   const experiences = resumeData?.experiences || [];
   const education = resumeData?.education || [];
   const achievements = resumeData?.achievements || [];
@@ -59,28 +52,40 @@ const ResumeContent = () => {
         </div>
         <div className="w-12 h-1 bg-primary rounded-full mb-6" />
 
-        <div className="space-y-0">
-          {experiences.map((exp: any, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ x: -20, opacity: 0 }}
-              animate={expInView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.15 }}
-              className="timeline-item group"
-            >
-              <div className="timeline-dot" />
-              <div className="pb-2 p-4 rounded-xl transition-all duration-300 hover:bg-secondary/30 hover:shadow-lg hover:shadow-primary/5 -ml-2">
-                <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">{exp.title}</h4>
-                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mb-2">
-                  <span className="text-primary font-medium">{exp.company}</span>
-                  <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{exp.location}</span>
-                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{exp.period}</span>
-                </div>
-                <p className="text-sm text-muted-foreground">{exp.description}</p>
+        {loadingResume ? (
+          <div className="space-y-4">
+            {[1, 2].map(i => (
+              <div key={i} className="p-4 space-y-2">
+                <Skeleton className="h-5 w-48" />
+                <Skeleton className="h-4 w-64" />
+                <Skeleton className="h-4 w-full" />
               </div>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-0">
+            {experiences.map((exp: any, index: number) => (
+              <motion.div
+                key={index}
+                initial={{ x: -20, opacity: 0 }}
+                animate={expInView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.15 }}
+                className="timeline-item group"
+              >
+                <div className="timeline-dot" />
+                <div className="pb-2 p-4 rounded-xl transition-all duration-300 hover:bg-secondary/30 hover:shadow-lg hover:shadow-primary/5 -ml-2">
+                  <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">{exp.title}</h4>
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mb-2">
+                    <span className="text-primary font-medium">{exp.company}</span>
+                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{exp.location}</span>
+                    <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{exp.period}</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">{exp.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Education */}
@@ -93,33 +98,45 @@ const ResumeContent = () => {
         </div>
         <div className="w-12 h-1 bg-primary rounded-full mb-6" />
 
-        <div className="space-y-4">
-          {education.map((edu: any, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ x: -20, opacity: 0 }}
-              animate={eduInView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="p-4 rounded-xl bg-secondary/30 transition-all duration-300 hover:bg-secondary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                <div>
-                  <h4 className="text-foreground font-medium">{edu.degree}</h4>
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mt-1 mb-2">
-                    <span className="text-primary">{edu.institution}</span>
-                    <span>{edu.period}</span>
-                  </div>
-                </div>
-                {edu.gpa && (
-                  <span className="px-3 py-1 rounded-lg bg-primary/20 text-primary text-sm font-semibold whitespace-nowrap">
-                    GPA: {edu.gpa}
-                  </span>
-                )}
+        {loadingResume ? (
+          <div className="space-y-4">
+            {[1, 2].map(i => (
+              <div key={i} className="p-4 rounded-xl bg-secondary/30 space-y-2">
+                <Skeleton className="h-5 w-48" />
+                <Skeleton className="h-4 w-36" />
+                <Skeleton className="h-4 w-full" />
               </div>
-              <p className="text-sm text-muted-foreground">{edu.description}</p>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {education.map((edu: any, index: number) => (
+              <motion.div
+                key={index}
+                initial={{ x: -20, opacity: 0 }}
+                animate={eduInView ? { x: 0, opacity: 1 } : { x: -20, opacity: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="p-4 rounded-xl bg-secondary/30 transition-all duration-300 hover:bg-secondary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                  <div>
+                    <h4 className="text-foreground font-medium">{edu.degree}</h4>
+                    <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mt-1 mb-2">
+                      <span className="text-primary">{edu.institution}</span>
+                      <span>{edu.period}</span>
+                    </div>
+                  </div>
+                  {edu.gpa && (
+                    <span className="px-3 py-1 rounded-lg bg-primary/20 text-primary text-sm font-semibold whitespace-nowrap">
+                      GPA: {edu.gpa}
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-muted-foreground">{edu.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Certificates */}
@@ -145,7 +162,7 @@ const ResumeContent = () => {
                 className="group rounded-xl bg-secondary/30 border border-border/50 overflow-hidden transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5 hover:scale-[1.02]"
               >
                 {cert.image_url ? (
-                  <img src={cert.image_url} alt={cert.title} className="w-full h-36 object-cover" />
+                  <img src={cert.image_url} alt={cert.title} className="w-full h-36 object-cover" loading="lazy" />
                 ) : (
                   <div className="w-full h-36 bg-secondary/50 flex items-center justify-center">
                     <Award className="w-10 h-10 text-muted-foreground/30" />
@@ -185,20 +202,31 @@ const ResumeContent = () => {
         </div>
         <div className="w-12 h-1 bg-primary rounded-full mb-6" />
 
-        <div className="grid md:grid-cols-3 gap-4">
-          {achievements.map((achieve: any, index: number) => (
-            <motion.div
-              key={index}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={achieveInView ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              className="achievement-card p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
-            >
-              <h4 className="text-lg font-bold text-primary mb-2">{achieve.title}</h4>
-              <p className="text-sm text-muted-foreground">{achieve.description}</p>
-            </motion.div>
-          ))}
-        </div>
+        {loadingResume ? (
+          <div className="grid md:grid-cols-3 gap-4">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="p-5 rounded-xl bg-primary/5 space-y-2">
+                <Skeleton className="h-6 w-20" />
+                <Skeleton className="h-4 w-full" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-3 gap-4">
+            {achievements.map((achieve: any, index: number) => (
+              <motion.div
+                key={index}
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={achieveInView ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="achievement-card p-5 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1"
+              >
+                <h4 className="text-lg font-bold text-primary mb-2">{achieve.title}</h4>
+                <p className="text-sm text-muted-foreground">{achieve.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );

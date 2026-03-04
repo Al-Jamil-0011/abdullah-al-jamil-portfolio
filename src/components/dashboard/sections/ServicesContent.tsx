@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Palette, Layout, Code, Layers, MessageCircle, Briefcase, Globe, Smartphone, PenTool, Zap, ArrowUpRight, Loader2 } from "lucide-react";
+import { Palette, Layout, Code, Layers, MessageCircle, Briefcase, Globe, Smartphone, PenTool, Zap, ArrowUpRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const iconMap: Record<string, React.ElementType> = {
   Palette, Layout, Code, Layers, MessageCircle, Briefcase, Globe, Smartphone, PenTool, Zap,
@@ -37,7 +38,6 @@ const ServicesContent = () => {
       transition={{ duration: 0.5 }}
       className="space-y-6"
     >
-      {/* Header */}
       <div className="glass-card p-6 md:p-8">
         <h3 className="text-xl font-semibold text-foreground mb-2">
           My <span className="text-primary">Services</span>
@@ -49,10 +49,16 @@ const ServicesContent = () => {
         </p>
       </div>
 
-      {/* Services Grid */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="glass-card p-6 space-y-4">
+              <Skeleton className="w-14 h-14 rounded-2xl" />
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+            </div>
+          ))}
         </div>
       ) : services && services.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -71,14 +77,10 @@ const ServicesContent = () => {
                   <IconComponent className="w-7 h-7 text-primary" />
                 </div>
                 <div className="flex items-start justify-between gap-2 mb-3">
-                  <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {service.title}
-                  </h4>
+                  <h4 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">{service.title}</h4>
                   <ArrowUpRight className="w-5 h-5 text-muted-foreground opacity-0 group-hover:opacity-100 group-hover:text-primary transition-all" />
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {service.description}
-                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{service.description}</p>
               </motion.div>
             );
           })}
@@ -89,23 +91,15 @@ const ServicesContent = () => {
         </div>
       )}
 
-      {/* CTA Section */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.5 }}
         className="glass-card p-6 md:p-8 text-center"
       >
-        <h4 className="text-lg font-semibold text-foreground mb-2">
-          Have a project in mind?
-        </h4>
-        <p className="text-muted-foreground mb-4">
-          Let's discuss how I can help bring your vision to life.
-        </p>
-        <a
-          href="/contact"
-          className="inline-flex items-center gap-2 btn-primary"
-        >
+        <h4 className="text-lg font-semibold text-foreground mb-2">Have a project in mind?</h4>
+        <p className="text-muted-foreground mb-4">Let's discuss how I can help bring your vision to life.</p>
+        <a href="/contact" className="inline-flex items-center gap-2 btn-primary">
           <span>Get in Touch</span>
           <ArrowUpRight className="w-4 h-4" />
         </a>

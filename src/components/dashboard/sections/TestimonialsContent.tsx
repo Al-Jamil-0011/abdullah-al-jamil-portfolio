@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Quote, Star, Loader2 } from "lucide-react";
+import { Quote, Star } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TestimonialsContent = () => {
   const { data: testimonials, isLoading } = useQuery({
@@ -24,7 +25,6 @@ const TestimonialsContent = () => {
       transition={{ duration: 0.5 }}
       className="space-y-6"
     >
-      {/* Header */}
       <div className="glass-card p-6 md:p-8">
         <h3 className="text-xl font-semibold text-foreground mb-2">
           Client <span className="text-primary">Testimonials</span>
@@ -36,10 +36,22 @@ const TestimonialsContent = () => {
         </p>
       </div>
 
-      {/* Testimonials Grid */}
       {isLoading ? (
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <div className="grid md:grid-cols-2 gap-5">
+          {[1, 2].map(i => (
+            <div key={i} className="glass-card p-6 space-y-4">
+              <div className="flex gap-1">{[1,2,3,4,5].map(s => <Skeleton key={s} className="w-4 h-4" />)}</div>
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+              <div className="flex items-center gap-4">
+                <Skeleton className="w-12 h-12 rounded-full" />
+                <div className="space-y-1">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-20" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : testimonials && testimonials.length > 0 ? (
         <div className="grid md:grid-cols-2 gap-5">
@@ -51,31 +63,20 @@ const TestimonialsContent = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="glass-card-hover p-6 relative"
             >
-              {/* Quote Icon */}
               <div className="absolute top-6 right-6 opacity-10">
                 <Quote className="w-12 h-12 text-primary" />
               </div>
-
-              {/* Rating */}
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
                   <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                 ))}
               </div>
-
-              {/* Content */}
               <p className="text-muted-foreground mb-6 leading-relaxed italic relative z-10">
                 "{testimonial.feedback}"
               </p>
-
-              {/* Author */}
               <div className="flex items-center gap-4">
                 {testimonial.avatar_url ? (
-                  <img
-                    src={testimonial.avatar_url}
-                    alt={testimonial.client_name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
+                  <img src={testimonial.avatar_url} alt={testimonial.client_name} className="w-12 h-12 rounded-full object-cover" loading="lazy" />
                 ) : (
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-secondary flex items-center justify-center">
                     <span className="text-sm font-semibold text-primary">
@@ -84,12 +85,8 @@ const TestimonialsContent = () => {
                   </div>
                 )}
                 <div>
-                  <h4 className="font-semibold text-foreground">
-                    {testimonial.client_name}
-                  </h4>
-                  <p className="text-sm text-muted-foreground">
-                    {testimonial.client_role}
-                  </p>
+                  <h4 className="font-semibold text-foreground">{testimonial.client_name}</h4>
+                  <p className="text-sm text-muted-foreground">{testimonial.client_role}</p>
                 </div>
               </div>
             </motion.div>
@@ -101,7 +98,6 @@ const TestimonialsContent = () => {
         </div>
       )}
 
-      {/* Trust Indicators */}
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

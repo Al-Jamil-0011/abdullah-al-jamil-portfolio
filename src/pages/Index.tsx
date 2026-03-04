@@ -201,7 +201,7 @@ const Index = ({ section = "about" }: IndexProps) => {
       <motion.div
         initial={{ opacity: showSplash ? 0 : 1 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, delay: showSplash ? 1.2 : 0 }}
+        transition={{ duration: 0.4, delay: showSplash ? 0.7 : 0 }}
       >
         <DashboardLayout section={section} />
       </motion.div>

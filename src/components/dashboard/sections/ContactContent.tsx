@@ -7,14 +7,17 @@ import { toast } from "sonner";
 import mapImage from "@/assets/map-dhaka.jpg";
 
 const ContactContent = () => {
-  const { data: contactData, isLoading } = useSiteContent("contact");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: ""
-  });
+  const { data: contactData } = useSiteContent("contact");
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const lastSubmitRef = useRef<number>(0);
+
+  const email = contactData?.email || "aljamil248@gmail.com";
+  const phone = contactData?.phone || "+880 1580881664";
+  const location = contactData?.location || "Dhaka, Bangladesh";
+  const availability = contactData?.availability || "Open for freelance projects 24/7";
+  const mapsLink = contactData?.maps_link || "https://maps.app.goo.gl/9NoaEa57XRUWAQKe9";
+  const introText = contactData?.intro_text || "Have a project in mind? Let's work together to bring your ideas to life.";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,22 +29,12 @@ const ContactContent = () => {
     try {
       const { error: dbError } = await supabase
         .from('contact_messages')
-        .insert({
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          message: formData.message.trim()
-        });
-
+        .insert({ name: formData.name.trim(), email: formData.email.trim(), message: formData.message.trim() });
       if (dbError) console.error("DB save error:", dbError);
 
       const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: {
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          message: formData.message.trim()
-        }
+        body: { name: formData.name.trim(), email: formData.email.trim(), message: formData.message.trim() }
       });
-
       if (error) throw error;
 
       toast.success("Message sent successfully! I'll get back to you soon.");
@@ -53,21 +46,6 @@ const ContactContent = () => {
       setIsSubmitting(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[200px]">
-        <Loader2 className="w-6 h-6 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  const email = contactData?.email || "aljamil248@gmail.com";
-  const phone = contactData?.phone || "+880 1580881664";
-  const location = contactData?.location || "Dhaka, Bangladesh";
-  const availability = contactData?.availability || "Open for freelance projects 24/7";
-  const mapsLink = contactData?.maps_link || "https://maps.app.goo.gl/9NoaEa57XRUWAQKe9";
-  const introText = contactData?.intro_text || "Have a project in mind? Let's work together to bring your ideas to life.";
 
   return (
     <motion.div
@@ -132,7 +110,7 @@ const ContactContent = () => {
             aria-label="View location on Google Maps"
           >
             <div className="relative h-40 overflow-hidden">
-              <img src={mapImage} alt={`Map showing ${location}`} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+              <img src={mapImage} alt={`Map showing ${location}`} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/30 to-transparent" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="p-4 rounded-full bg-card/80 backdrop-blur-sm group-hover:bg-primary/20 transition-colors">

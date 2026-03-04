@@ -1,30 +1,30 @@
 import { motion } from "framer-motion";
 import { Briefcase, Rocket, Users } from "lucide-react";
 import { useSiteContent } from "@/hooks/use-site-content";
-import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const iconMap: Record<string, React.ElementType> = { Briefcase, Rocket, Users };
+
+// Default data so content renders instantly even before DB responds
+const defaults = {
+  headline: "Hey there!",
+  subheadline: "I'm thrilled to tell you a bit about myself. I have over a year of hands-on experience, specializing in UX/UI Design, Product Design, and Software Development.",
+  stats: [
+    { icon: "Briefcase", label: "Projects Completed", number: "30+" },
+    { icon: "Rocket", label: "Live Projects", number: "10+" },
+    { icon: "Users", label: "Happy Clients", number: "22+" },
+  ],
+};
 
 const IntroSection = () => {
   const { data: hero, isLoading } = useSiteContent("hero");
 
-  if (isLoading) {
-    return (
-      <div className="glass-card p-6 md:p-8 flex items-center justify-center min-h-[200px]">
-        <Loader2 className="w-6 h-6 animate-spin text-primary" />
-      </div>
-    );
-  }
+  const headline = hero?.headline || defaults.headline;
+  const subheadline = hero?.subheadline || defaults.subheadline;
+  const stats = hero?.stats || defaults.stats;
 
-  const headline = hero?.headline || "Hey there!";
-  const subheadline = hero?.subheadline || "";
-  const stats = hero?.stats || [];
-
-  // Highlight words wrapped in *word* as primary colored
   const renderSubheadline = (text: string) => {
-    // Split by specialization keywords and highlight them
     const specializations = ["UX/UI Design", "Product Design", "Software Development"];
-    let result = text;
     const parts: React.ReactNode[] = [];
     let remaining = text;
     let key = 0;
@@ -38,7 +38,6 @@ const IntroSection = () => {
       }
     });
     parts.push(remaining);
-
     return parts;
   };
 
@@ -51,21 +50,34 @@ const IntroSection = () => {
     >
       {/* Greeting */}
       <div className="flex items-center gap-3 mb-4">
-        <h1 className="text-2xl font-bold text-foreground md:text-4xl">{headline}</h1>
-        <motion.span
-          animate={{ rotate: [0, 14, -8, 14, 0] }}
-          transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
-          className="text-3xl"
-        >
-          👋
-        </motion.span>
+        {isLoading ? (
+          <Skeleton className="h-9 w-48" />
+        ) : (
+          <>
+            <h1 className="text-2xl font-bold text-foreground md:text-4xl">{headline}</h1>
+            <motion.span
+              animate={{ rotate: [0, 14, -8, 14, 0] }}
+              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+              className="text-3xl"
+            >
+              👋
+            </motion.span>
+          </>
+        )}
       </div>
 
       {/* Intro Text */}
       <div className="mb-8">
-        <p className="text-muted-foreground leading-relaxed text-lg">
-          {renderSubheadline(subheadline)}
-        </p>
+        {isLoading ? (
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-full" />
+            <Skeleton className="h-5 w-3/4" />
+          </div>
+        ) : (
+          <p className="text-muted-foreground leading-relaxed text-lg">
+            {renderSubheadline(subheadline)}
+          </p>
+        )}
       </div>
 
       {/* Stats */}
