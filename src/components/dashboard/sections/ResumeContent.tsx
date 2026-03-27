@@ -9,6 +9,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useState } from "react";
 
 const ResumeContent = () => {
+  const [selectedCertImage, setSelectedCertImage] = useState<string | null>(null);
   const expRef = useRef(null);
   const eduRef = useRef(null);
   const certRef = useRef(null);
