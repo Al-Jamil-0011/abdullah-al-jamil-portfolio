@@ -232,6 +232,19 @@ const ResumeContent = () => {
           </div>
         )}
       </div>
+
+      {/* Certificate Image Popup */}
+      <Dialog open={!!selectedCertImage} onOpenChange={() => setSelectedCertImage(null)}>
+        <DialogContent className="max-w-3xl p-2 bg-background/95 backdrop-blur-xl border-border/50">
+          {selectedCertImage && (
+            <img
+              src={selectedCertImage}
+              alt="Certificate"
+              className="w-full h-auto rounded-lg object-contain max-h-[80vh]"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };
