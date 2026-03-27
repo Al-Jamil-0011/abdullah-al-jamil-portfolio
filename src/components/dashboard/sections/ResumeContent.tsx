@@ -5,8 +5,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { MapPin, Calendar, Award, GraduationCap, Briefcase, Trophy, ExternalLink } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState } from "react";
 
 const ResumeContent = () => {
+  const [selectedCertImage, setSelectedCertImage] = useState<string | null>(null);
   const expRef = useRef(null);
   const eduRef = useRef(null);
   const certRef = useRef(null);
@@ -159,7 +162,8 @@ const ResumeContent = () => {
                 initial={{ y: 15, opacity: 0 }}
                 animate={certInView ? { y: 0, opacity: 1 } : { y: 15, opacity: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.12 }}
-                className="group rounded-xl bg-secondary/30 border border-border/50 overflow-hidden transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5 hover:scale-[1.02]"
+                className="group rounded-xl bg-secondary/30 border border-border/50 overflow-hidden transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5 hover:scale-[1.02] cursor-pointer"
+                onClick={() => cert.image_url && setSelectedCertImage(cert.image_url)}
               >
                 {cert.image_url ? (
                   <img src={cert.image_url} alt={cert.title} className="w-full h-36 object-cover" loading="lazy" />
@@ -177,7 +181,7 @@ const ResumeContent = () => {
                       )}
                     </div>
                     {cert.credential_link && (
-                      <a href={cert.credential_link} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0">
+                      <a href={cert.credential_link} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0" onClick={(e) => e.stopPropagation()}>
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
                     )}
@@ -228,6 +232,19 @@ const ResumeContent = () => {
           </div>
         )}
       </div>
+
+      {/* Certificate Image Popup */}
+      <Dialog open={!!selectedCertImage} onOpenChange={() => setSelectedCertImage(null)}>
+        <DialogContent className="max-w-3xl p-2 bg-background/95 backdrop-blur-xl border-border/50">
+          {selectedCertImage && (
+            <img
+              src={selectedCertImage}
+              alt="Certificate"
+              className="w-full h-auto rounded-lg object-contain max-h-[80vh]"
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };
