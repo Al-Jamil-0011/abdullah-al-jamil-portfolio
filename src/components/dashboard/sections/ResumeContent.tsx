@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { MapPin, Calendar, Award, GraduationCap, Briefcase, Trophy, ExternalLink } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { useState } from "react";
 
 const ResumeContent = () => {
   const expRef = useRef(null);
