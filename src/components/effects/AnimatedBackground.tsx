@@ -157,7 +157,7 @@ const AnimatedBackground = () => {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
       {/* Deep ambient glow orbs (very faint) */}
       <div
