@@ -10,6 +10,8 @@ import SkillsSection from "@/components/dashboard/SkillsSection";
 import SEOHead from "@/components/layout/SEOHead";
 import Footer from "@/components/layout/Footer";
 import SplashScreen from "@/components/SplashScreen";
+import AnimatedBackground from "@/components/effects/AnimatedBackground";
+import CustomCursor from "@/components/effects/CustomCursor";
 
 // Lazy load non-critical sections for performance
 const AboutContent = lazy(() => import("@/components/dashboard/sections/AboutContent"));
@@ -197,6 +199,8 @@ const Index = ({ section = "about" }: IndexProps) => {
 
   return (
     <ThemeProvider>
+      <AnimatedBackground />
+      <CustomCursor />
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       <motion.div
         initial={{ opacity: showSplash ? 0 : 1 }}
