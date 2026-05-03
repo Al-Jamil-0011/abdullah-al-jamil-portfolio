@@ -121,7 +121,7 @@ const DashboardLayout = ({ section }: DashboardLayoutProps) => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen relative">
       <SEOHead section={section} />
       
       {/* Skip to main content link for accessibility */}
