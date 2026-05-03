@@ -133,6 +133,23 @@
     font-family: 'Inter', system-ui, sans-serif;
   }
 
+  /* Custom cursor: hide native on fine-pointer devices */
+  @media (hover: hover) and (pointer: fine) {
+    html, body, * {
+      cursor: none !important;
+    }
+  }
+
+  /* Click micro-feedback for interactive elements */
+  @media (hover: hover) and (pointer: fine) {
+    a:active,
+    button:active,
+    [role="button"]:active {
+      transform: scale(0.97);
+      transition: transform 0.08s ease-out;
+    }
+  }
+
   /* Typography Scale - Modern sans-serif for dashboard */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
