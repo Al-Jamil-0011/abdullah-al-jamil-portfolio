@@ -1,4 +1,6 @@
+// Animated constellation background — synced to GitHub for Vercel deployment
 import { useEffect, useRef } from "react";
+
 
 /**
  * Animated constellation network background.
