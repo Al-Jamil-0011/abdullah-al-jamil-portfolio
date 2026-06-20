@@ -27,11 +27,6 @@ const ContactContent = () => {
     setIsSubmitting(true);
 
     try {
-      const { error: dbError } = await supabase
-        .from('contact_messages')
-        .insert({ name: formData.name.trim(), email: formData.email.trim(), message: formData.message.trim() });
-      if (dbError) console.error("DB save error:", dbError);
-
       const { error } = await supabase.functions.invoke('send-contact-email', {
         body: { name: formData.name.trim(), email: formData.email.trim(), message: formData.message.trim() }
       });
@@ -39,8 +34,7 @@ const ContactContent = () => {
 
       toast.success("Message sent successfully! I'll get back to you soon.");
       setFormData({ name: "", email: "", message: "" });
-    } catch (error) {
-      console.error("Error sending message:", error);
+    } catch (_error) {
       toast.error("Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);
