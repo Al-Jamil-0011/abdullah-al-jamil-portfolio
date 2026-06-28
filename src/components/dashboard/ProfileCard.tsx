@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Linkedin, Facebook, Instagram, FileText, Mail } from "lucide-react";
+import { Linkedin, Facebook, Instagram, FileText, Mail, Github } from "lucide-react";
 import { useSiteContent } from "@/hooks/use-site-content";
 import abdullahPortrait from "@/assets/abdullah-portrait.png";
 import profileBg from "@/assets/profile-bg.jpg";
@@ -17,6 +17,7 @@ const platformIconMap: Record<string, React.ElementType> = {
   Instagram,
   Facebook,
   LinkedIn: Linkedin,
+  GitHub: Github,
 };
 
 interface ProfileCardProps {
@@ -103,6 +104,15 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
               </a>
             );
           })}
+          <a
+            href="https://github.com/Al-Jamil-0011"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-icon-btn p-2.5 rounded-xl bg-secondary/50 text-muted-foreground transition-all duration-300"
+            aria-label="GitHub"
+          >
+            <Github className="w-4 h-4" />
+          </a>
         </motion.div>
 
         <div className="flex-1" />
