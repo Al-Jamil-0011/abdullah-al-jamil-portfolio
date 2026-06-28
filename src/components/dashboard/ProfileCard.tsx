@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Linkedin, Facebook, Instagram, FileText, Mail } from "lucide-react";
+import { Linkedin, Facebook, Instagram, FileText, Mail, Github } from "lucide-react";
 import { useSiteContent } from "@/hooks/use-site-content";
 import abdullahPortrait from "@/assets/abdullah-portrait.png";
 import profileBg from "@/assets/profile-bg.jpg";
