@@ -104,6 +104,15 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
               </a>
             );
           })}
+          <a
+            href="https://github.com/Al-Jamil-0011"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-icon-btn p-2.5 rounded-xl bg-secondary/50 text-muted-foreground transition-all duration-300"
+            aria-label="GitHub"
+          >
+            <Github className="w-4 h-4" />
+          </a>
         </motion.div>
 
         <div className="flex-1" />
