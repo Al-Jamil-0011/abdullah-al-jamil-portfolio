@@ -17,6 +17,7 @@ const platformIconMap: Record<string, React.ElementType> = {
   Instagram,
   Facebook,
   LinkedIn: Linkedin,
+  GitHub: Github,
 };
 
 interface ProfileCardProps {
