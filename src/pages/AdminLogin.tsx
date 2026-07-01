@@ -30,7 +30,7 @@ const AdminLogin = () => {
   // Redirect if already authenticated as admin
   useEffect(() => {
     if (!authLoading && user && isAdmin) {
-      navigate("/admin");
+      navigate("/admin/dashboard", { replace: true });
     }
   }, [user, isAdmin, authLoading, navigate]);
 

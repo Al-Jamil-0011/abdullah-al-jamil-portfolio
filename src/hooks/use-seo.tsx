@@ -13,7 +13,7 @@ const defaultSEO: SEOProps = {
   title: "Abdullah Al Jamil | Product Designer & UX/UI Developer",
   description: "Product Designer, UX/UI Specialist, and Software Developer crafting user-centered digital experiences. 30+ projects, 22+ happy clients. Based in Bangladesh.",
   keywords: "Product Designer, UX Designer, UI Designer, Software Developer, Bangladesh, Freelance Designer",
-  ogImage: "https://lovable.dev/opengraph-image-p98pqg.png",
+  ogImage: "/favicon.png",
   ogType: "website",
 };
 
