@@ -133,12 +133,7 @@
     font-family: 'Inter', system-ui, sans-serif;
   }
 
-  /* Custom cursor: hide native on fine-pointer devices */
-  @media (hover: hover) and (pointer: fine) {
-    html, body, * {
-      cursor: none !important;
-    }
-  }
+  /* Native cursor restored globally */
 
   /* Click micro-feedback for interactive elements */
   @media (hover: hover) and (pointer: fine) {

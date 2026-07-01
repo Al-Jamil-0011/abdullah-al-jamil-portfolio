@@ -43,8 +43,9 @@ const App = () => (
               <Route path="/contact" element={<Index section="contact" />} />
               
               {/* Admin Dashboard (separate site) */}
-              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<Admin />} />
               
               {/* Catch-all 404 */}
               <Route path="*" element={<NotFound />} />
