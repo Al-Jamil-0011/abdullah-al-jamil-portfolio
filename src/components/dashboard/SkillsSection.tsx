@@ -96,7 +96,7 @@ const SkillsSection = () => {
                     style={{ backgroundColor: skill.color }}
                     initial={{ scaleX: 0 }}
                     animate={isInView ? { scaleX: skill.percentage / 100 } : { scaleX: 0 }}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as const }}
                   >
                     <div className="w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_12px_currentColor]" style={{ color: skill.color }} />
                   </motion.div>
