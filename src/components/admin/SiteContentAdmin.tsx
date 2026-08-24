@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Loader2, Save, Plus, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { Loader2, Save, Plus, Trash2, ChevronDown, ChevronUp, Upload } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CollapsibleSectionProps {
   title: string;
@@ -163,6 +164,7 @@ const ResumeEditor = () => {
   const { data, isLoading } = useSiteContent("resume");
   const updateMutation = useUpdateSiteContent();
   const [form, setForm] = useState<any>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => { if (data) setForm(data); }, [data]);
 
@@ -190,10 +192,56 @@ const ResumeEditor = () => {
   const addAchievement = () => setForm({ ...form, achievements: [...form.achievements, { title: "", description: "" }] });
   const removeAchievement = (i: number) => setForm({ ...form, achievements: form.achievements.filter((_: any, idx: number) => idx !== i) });
 
+  const handleResumeUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.type !== "application/pdf") {
+      toast.error("Only PDF files are allowed");
+      return;
+    }
+    setUploading(true);
+    try {
+      const path = `resume-${Date.now()}.pdf`;
+      const { error } = await supabase.storage.from("resume").upload(path, file, {
+        contentType: "application/pdf",
+        upsert: true,
+      });
+      if (error) throw error;
+      const next = { ...form, resume_path: path, resume_name: file.name };
+      setForm(next);
+      updateMutation.mutate({ sectionKey: "resume", content: next }, {
+        onSuccess: () => toast.success("Resume PDF uploaded!"),
+        onError: () => toast.error("Uploaded but failed to save"),
+      });
+    } catch (err: any) {
+      toast.error(err.message || "Upload failed");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
   return (
     <CollapsibleSection title="📄 Resume Section">
       <div className="space-y-6">
-        {/* Experiences */}
+        {/* Resume PDF */}
+        <div className="p-3 rounded-lg bg-secondary/30 space-y-2">
+          <label className="text-sm font-bold text-foreground block">Resume PDF (opens from the website Resume button)</label>
+          {form.resume_path ? (
+            <p className="text-xs text-primary break-all">Current file: {form.resume_name || form.resume_path}</p>
+          ) : (
+            <p className="text-xs text-muted-foreground">No PDF uploaded yet — the button uses the default file.</p>
+          )}
+          <label className="inline-flex w-full sm:w-auto">
+            <input type="file" accept="application/pdf" className="hidden" onChange={handleResumeUpload} disabled={uploading} />
+            <span className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-border bg-background text-sm font-medium cursor-pointer hover:bg-secondary/50 transition-colors">
+              {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+              {uploading ? "Uploading..." : "Upload Resume PDF"}
+            </span>
+          </label>
+        </div>
+
+
         <div>
           <label className="text-sm font-bold text-foreground mb-2 block">Experience</label>
           {form.experiences?.map((exp: any, i: number) => (

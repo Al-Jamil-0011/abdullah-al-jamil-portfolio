@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Linkedin, Facebook, Instagram, FileText, Mail, Github } from "lucide-react";
 import { useSiteContent } from "@/hooks/use-site-content";
+import { supabase } from "@/integrations/supabase/client";
 import abdullahPortrait from "@/assets/abdullah-portrait.png";
 import profileBg from "@/assets/profile-bg.jpg";
 
@@ -27,6 +28,21 @@ interface ProfileCardProps {
 const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
   const [isHovered, setIsHovered] = React.useState(false);
   const { data: profileData } = useSiteContent("profile");
+  const { data: resumeData } = useSiteContent("resume");
+  const [resumeUrl, setResumeUrl] = React.useState("/resume.pdf");
+
+  React.useEffect(() => {
+    const path = (resumeData as any)?.resume_path;
+    if (!path) return;
+    let active = true;
+    supabase.storage
+      .from("resume")
+      .createSignedUrl(path, 60 * 60 * 24 * 7)
+      .then(({ data }) => {
+        if (active && data?.signedUrl) setResumeUrl(data.signedUrl);
+      });
+    return () => { active = false; };
+  }, [resumeData]);
 
   const name = profileData?.name || "Abdullah Al Jamil";
   const title = profileData?.title || "Product Designer • UX/UI Designer • Developer";
@@ -119,7 +135,7 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
 
         {/* Action Buttons */}
         <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5, duration: 0.4 }} className="grid grid-cols-2 gap-3 pt-4 border-t border-border/50">
-          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn-gradient-animated flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium">
+          <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="btn-gradient-animated flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium">
             <FileText className="w-4 h-4" />
             <span>Resume</span>
           </a>
