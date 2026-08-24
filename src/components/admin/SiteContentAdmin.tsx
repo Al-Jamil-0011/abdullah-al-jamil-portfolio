@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Loader2, Save, Plus, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { Loader2, Save, Plus, Trash2, ChevronDown, ChevronUp, Upload } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CollapsibleSectionProps {
   title: string;
