@@ -164,6 +164,7 @@ const ResumeEditor = () => {
   const { data, isLoading } = useSiteContent("resume");
   const updateMutation = useUpdateSiteContent();
   const [form, setForm] = useState<any>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => { if (data) setForm(data); }, [data]);
 
