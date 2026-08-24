@@ -27,6 +27,21 @@ interface ProfileCardProps {
 const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
   const [isHovered, setIsHovered] = React.useState(false);
   const { data: profileData } = useSiteContent("profile");
+  const { data: resumeData } = useSiteContent("resume");
+  const [resumeUrl, setResumeUrl] = React.useState("/resume.pdf");
+
+  React.useEffect(() => {
+    const path = (resumeData as any)?.resume_path;
+    if (!path) return;
+    let active = true;
+    supabase.storage
+      .from("resume")
+      .createSignedUrl(path, 60 * 60 * 24 * 7)
+      .then(({ data }) => {
+        if (active && data?.signedUrl) setResumeUrl(data.signedUrl);
+      });
+    return () => { active = false; };
+  }, [resumeData]);
 
   const name = profileData?.name || "Abdullah Al Jamil";
   const title = profileData?.title || "Product Designer • UX/UI Designer • Developer";
