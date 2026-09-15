@@ -88,7 +88,7 @@ const Hero = () => {
               
               <div className="relative w-72 md:w-80 lg:w-96 aspect-square rounded-2xl overflow-hidden">
                 <img
-                  src={abdullahPortrait}
+                  src={abdullahPortrait.url}
                   alt="Abdullah Al Jamil - Product Designer"
                   className="w-full h-full object-cover object-top"
                 />
