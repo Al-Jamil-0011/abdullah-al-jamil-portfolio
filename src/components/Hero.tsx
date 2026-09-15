@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import abdullahPortrait from "@/assets/abdullah-professional-portrait.png.asset.json";
+import abdullahPortrait from "@/assets/abdullah-portrait.png";
 
 const stats = [
   { number: "30+", label: "Projects Completed" },
@@ -88,7 +88,7 @@ const Hero = () => {
               
               <div className="relative w-72 md:w-80 lg:w-96 aspect-square rounded-2xl overflow-hidden">
                 <img
-                  src={abdullahPortrait.url}
+                  src={abdullahPortrait}
                   alt="Abdullah Al Jamil - Product Designer"
                   className="w-full h-full object-cover object-top"
                 />

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Linkedin, Facebook, Instagram, FileText, Mail, Github } from "lucide-react";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { supabase } from "@/integrations/supabase/client";
-import abdullahPortrait from "@/assets/abdullah-professional-portrait.png.asset.json";
+import abdullahPortrait from "@/assets/abdullah-portrait.png";
 import profileBg from "@/assets/profile-bg.jpg";
 
 // Behance icon component
@@ -90,7 +90,7 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
       <div className="relative -mt-14 md:-mt-16 flex-row flex items-start justify-center">
         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, duration: 0.4 }} className="relative">
           <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden border-4 border-card shadow-xl">
-            <img src={abdullahPortrait.url} alt={name} className="w-full h-full object-cover" />
+            <img src={abdullahPortrait} alt={name} className="w-full h-full object-cover" />
           </div>
           <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-3 border-card" />
         </motion.div>
