@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Linkedin, Facebook, Instagram, FileText, Mail, Github } from "lucide-react";
 import { useSiteContent } from "@/hooks/use-site-content";
 import { supabase } from "@/integrations/supabase/client";
-import abdullahPortrait from "@/assets/abdullah-portrait.png";
+import abdullahPortrait from "@/assets/abdullah-professional-portrait.png.asset.json";
 import profileBg from "@/assets/profile-bg.jpg";
 
 // Behance icon component

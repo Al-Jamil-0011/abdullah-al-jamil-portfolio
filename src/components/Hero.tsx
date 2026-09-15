@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
-import abdullahPortrait from "@/assets/abdullah-portrait.png";
+import abdullahPortrait from "@/assets/abdullah-professional-portrait.png.asset.json";
 
 const stats = [
   { number: "30+", label: "Projects Completed" },
