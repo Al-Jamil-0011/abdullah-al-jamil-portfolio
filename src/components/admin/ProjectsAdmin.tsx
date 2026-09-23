@@ -120,6 +120,21 @@ const ProjectFormFields = ({ formData, setFormData }: { formData: ProjectForm; s
       </div>
     </div>
     <div className="space-y-2">
+      <Label>Portfolio Filters</Label>
+      <div className="flex flex-wrap gap-4 rounded-lg border border-border/60 p-3">
+        <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
+          <input type="checkbox" className="accent-primary w-4 h-4" checked={formData.is_live}
+            onChange={(e) => setFormData({ ...formData, is_live: e.target.checked })} />
+          Show under "Live"
+        </label>
+        <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
+          <input type="checkbox" className="accent-primary w-4 h-4" checked={formData.is_latest}
+            onChange={(e) => setFormData({ ...formData, is_latest: e.target.checked })} />
+          Show under "Latest"
+        </label>
+      </div>
+    </div>
+    <div className="space-y-2">
       <Label>Design Thinking / Process</Label>
       <Textarea value={formData.thinking_process} onChange={(e) => setFormData({ ...formData, thinking_process: e.target.value })} placeholder="Describe the design thinking behind this project..." rows={3} maxLength={1000} />
     </div>
