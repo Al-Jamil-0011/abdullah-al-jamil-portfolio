@@ -41,6 +41,8 @@ const initialFormState: ProjectForm = {
   progress_status: "Processing",
   completion_date: "",
   live_link: "",
+  is_live: false,
+  is_latest: false,
 };
 
 const projectTypes = ["Web", "Mobile", "UI/UX", "Branding", "Dashboard", "E-commerce", "WEB-APP", "WEBSITE"];
