@@ -19,7 +19,16 @@ interface Project {
   progress_status: string | null;
   completion_date: string | null;
   live_link: string | null;
+  is_live: boolean | null;
+  is_latest: boolean | null;
 }
+
+type FilterKey = "all" | "live" | "latest";
+const filters: { key: FilterKey; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "live", label: "Live" },
+  { key: "latest", label: "Latest" },
+];
 
 const gradientColors = [
   "from-primary/20 to-secondary",
@@ -123,6 +132,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 };
 
 const ProjectsContent = () => {
+  const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
   const { data: projects = [], isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: async () => {
@@ -133,6 +143,12 @@ const ProjectsContent = () => {
       if (error) throw error;
       return data as Project[];
     },
+  });
+
+  const visibleProjects = projects.filter((p) => {
+    if (activeFilter === "live") return !!p.is_live;
+    if (activeFilter === "latest") return !!p.is_latest;
+    return true;
   });
 
   return (
@@ -151,6 +167,23 @@ const ProjectsContent = () => {
           A selection of projects that showcase my approach to design and development. 
           Click "My thinking process" to understand the reasoning behind each decision.
         </p>
+
+        <div className="flex flex-wrap items-center gap-2 mt-5">
+          {filters.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => setActiveFilter(f.key)}
+              aria-pressed={activeFilter === f.key}
+              className={`text-xs sm:text-sm px-4 py-1.5 rounded-full border transition-all duration-250 ${
+                activeFilter === f.key
+                  ? "bg-primary/15 border-primary/50 text-primary shadow-[0_0_18px_-6px_hsl(var(--primary))]"
+                  : "bg-secondary/40 border-border/60 text-muted-foreground hover:text-foreground hover:border-primary/30"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {isLoading ? (
@@ -168,16 +201,18 @@ const ProjectsContent = () => {
           ))}
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 gap-5">
-          {projects.map((project, index) => (
+        <motion.div key={activeFilter} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.25 }} className="grid md:grid-cols-2 gap-5">
+          {visibleProjects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
-        </div>
+        </motion.div>
       )}
 
-      {!isLoading && projects.length === 0 && (
+      {!isLoading && visibleProjects.length === 0 && (
         <div className="glass-card p-8 text-center">
-          <p className="text-muted-foreground">No projects available yet.</p>
+          <p className="text-muted-foreground">
+            {projects.length === 0 ? "No projects available yet." : "No projects in this filter yet."}
+          </p>
         </div>
       )}
     </motion.div>
