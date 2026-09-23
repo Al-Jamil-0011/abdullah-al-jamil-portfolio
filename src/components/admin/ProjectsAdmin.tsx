@@ -24,6 +24,8 @@ interface ProjectForm {
   progress_status: string;
   completion_date: string;
   live_link: string;
+  is_live: boolean;
+  is_latest: boolean;
 }
 
 const initialFormState: ProjectForm = {
@@ -39,6 +41,8 @@ const initialFormState: ProjectForm = {
   progress_status: "Processing",
   completion_date: "",
   live_link: "",
+  is_live: false,
+  is_latest: false,
 };
 
 const projectTypes = ["Web", "Mobile", "UI/UX", "Branding", "Dashboard", "E-commerce", "WEB-APP", "WEBSITE"];
@@ -116,6 +120,21 @@ const ProjectFormFields = ({ formData, setFormData }: { formData: ProjectForm; s
       </div>
     </div>
     <div className="space-y-2">
+      <Label>Portfolio Filters</Label>
+      <div className="flex flex-wrap gap-4 rounded-lg border border-border/60 p-3">
+        <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
+          <input type="checkbox" className="accent-primary w-4 h-4" checked={formData.is_live}
+            onChange={(e) => setFormData({ ...formData, is_live: e.target.checked })} />
+          Show under "Live"
+        </label>
+        <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">
+          <input type="checkbox" className="accent-primary w-4 h-4" checked={formData.is_latest}
+            onChange={(e) => setFormData({ ...formData, is_latest: e.target.checked })} />
+          Show under "Latest"
+        </label>
+      </div>
+    </div>
+    <div className="space-y-2">
       <Label>Design Thinking / Process</Label>
       <Textarea value={formData.thinking_process} onChange={(e) => setFormData({ ...formData, thinking_process: e.target.value })} placeholder="Describe the design thinking behind this project..." rows={3} maxLength={1000} />
     </div>
@@ -156,6 +175,8 @@ const ProjectsAdmin = () => {
         progress_status: project.progress_status,
         completion_date: project.completion_date.trim() || null,
         live_link: project.live_link.trim() || null,
+        is_live: project.is_live,
+        is_latest: project.is_latest,
         is_published: true,
         display_order: (projects?.length || 0) + 1,
       });
@@ -186,6 +207,8 @@ const ProjectsAdmin = () => {
         progress_status: project.progress_status,
         completion_date: project.completion_date.trim() || null,
         live_link: project.live_link.trim() || null,
+        is_live: project.is_live,
+        is_latest: project.is_latest,
       }).eq("id", id);
       if (error) throw error;
     },
@@ -245,6 +268,8 @@ const ProjectsAdmin = () => {
       progress_status: project.progress_status || "Processing",
       completion_date: project.completion_date || "",
       live_link: project.live_link || "",
+      is_live: !!project.is_live,
+      is_latest: !!project.is_latest,
     });
     setEditingProject(project.id);
   };
@@ -399,6 +424,8 @@ const ProjectsAdmin = () => {
                       <span className={`text-xs px-2 py-0.5 rounded-full ${getStatusColor(project.progress_status)}`}>{project.progress_status}</span>
                     )}
                     {project.completion_date && <span className="text-xs text-muted-foreground">📅 {project.completion_date}</span>}
+                    {project.is_live && <span className="text-xs px-2 py-0.5 rounded-full bg-primary/15 text-primary">Live</span>}
+                    {project.is_latest && <span className="text-xs px-2 py-0.5 rounded-full bg-primary/15 text-primary">Latest</span>}
                   </div>
                 </div>
               </div>

@@ -132,6 +132,8 @@ export type Database = {
           display_order: number | null
           external_link: string | null
           id: string
+          is_latest: boolean
+          is_live: boolean
           is_published: boolean | null
           live_link: string | null
           progress_status: string | null
@@ -151,6 +153,8 @@ export type Database = {
           display_order?: number | null
           external_link?: string | null
           id?: string
+          is_latest?: boolean
+          is_live?: boolean
           is_published?: boolean | null
           live_link?: string | null
           progress_status?: string | null
@@ -170,6 +174,8 @@ export type Database = {
           display_order?: number | null
           external_link?: string | null
           id?: string
+          is_latest?: boolean
+          is_live?: boolean
           is_published?: boolean | null
           live_link?: string | null
           progress_status?: string | null
