@@ -24,6 +24,8 @@ interface ProjectForm {
   progress_status: string;
   completion_date: string;
   live_link: string;
+  is_live: boolean;
+  is_latest: boolean;
 }
 
 const initialFormState: ProjectForm = {
