@@ -175,6 +175,8 @@ const ProjectsAdmin = () => {
         progress_status: project.progress_status,
         completion_date: project.completion_date.trim() || null,
         live_link: project.live_link.trim() || null,
+        is_live: project.is_live,
+        is_latest: project.is_latest,
         is_published: true,
         display_order: (projects?.length || 0) + 1,
       });
@@ -205,6 +207,8 @@ const ProjectsAdmin = () => {
         progress_status: project.progress_status,
         completion_date: project.completion_date.trim() || null,
         live_link: project.live_link.trim() || null,
+        is_live: project.is_live,
+        is_latest: project.is_latest,
       }).eq("id", id);
       if (error) throw error;
     },
@@ -264,6 +268,8 @@ const ProjectsAdmin = () => {
       progress_status: project.progress_status || "Processing",
       completion_date: project.completion_date || "",
       live_link: project.live_link || "",
+      is_live: !!project.is_live,
+      is_latest: !!project.is_latest,
     });
     setEditingProject(project.id);
   };
@@ -418,6 +424,8 @@ const ProjectsAdmin = () => {
                       <span className={`text-xs px-2 py-0.5 rounded-full ${getStatusColor(project.progress_status)}`}>{project.progress_status}</span>
                     )}
                     {project.completion_date && <span className="text-xs text-muted-foreground">📅 {project.completion_date}</span>}
+                    {project.is_live && <span className="text-xs px-2 py-0.5 rounded-full bg-primary/15 text-primary">Live</span>}
+                    {project.is_latest && <span className="text-xs px-2 py-0.5 rounded-full bg-primary/15 text-primary">Latest</span>}
                   </div>
                 </div>
               </div>
