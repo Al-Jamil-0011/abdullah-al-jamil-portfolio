@@ -56,7 +56,39 @@ interface ImportResult {
   errors: string[];
 }
 
-const ProjectFormFields = ({ formData, setFormData }: { formData: ProjectForm; setFormData: (data: ProjectForm) => void }) => (
+const ProjectFormFields = ({ formData, setFormData }: { formData: ProjectForm; setFormData: (data: ProjectForm) => void }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file (JPG, PNG, WebP).");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be under 5MB.");
+      return;
+    }
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `projects/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error } = await supabase.storage.from("certificates").upload(path, file, { upsert: false });
+      if (error) throw error;
+      const { data } = supabase.storage.from("certificates").getPublicUrl(path);
+      setFormData({ ...formData, thumbnail_url: data.publicUrl });
+      toast.success("Thumbnail uploaded!");
+    } catch (err: any) {
+      toast.error(err.message || "Upload failed");
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  return (
   <div className="space-y-4">
     <div className="grid md:grid-cols-2 gap-4">
       <div className="space-y-2">
@@ -64,8 +96,17 @@ const ProjectFormFields = ({ formData, setFormData }: { formData: ProjectForm; s
         <Input value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} placeholder="Enter project title" required maxLength={200} />
       </div>
       <div className="space-y-2">
-        <Label>Thumbnail URL</Label>
-        <Input type="url" value={formData.thumbnail_url} onChange={(e) => setFormData({ ...formData, thumbnail_url: e.target.value })} placeholder="https://example.com/image.jpg" />
+        <Label>Thumbnail</Label>
+        <div className="flex gap-2">
+          <Input type="url" value={formData.thumbnail_url} onChange={(e) => setFormData({ ...formData, thumbnail_url: e.target.value })} placeholder="https://example.com/image.jpg" className="flex-1" />
+          <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleThumbnailUpload} />
+          <Button type="button" variant="outline" size="icon" onClick={() => fileInputRef.current?.click()} disabled={uploading} title="Upload from device" aria-label="Upload thumbnail from device">
+            {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+          </Button>
+        </div>
+        {formData.thumbnail_url && (
+          <img src={formData.thumbnail_url} alt="Thumbnail preview" className="mt-2 h-20 w-32 object-cover rounded-lg border border-border" />
+        )}
       </div>
     </div>
     <div className="space-y-2">
