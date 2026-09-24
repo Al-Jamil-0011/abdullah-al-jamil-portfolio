@@ -8,6 +8,13 @@
       "when": 1790179601313,
       "tag": "0000_add_project_filter_flags",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790222210138,
+      "tag": "0001_project_thumbnail_storage_policies",
+      "breakpoints": true
     }
   ]
 }
