@@ -180,7 +180,8 @@ const ProjectFormFields = ({ formData, setFormData }: { formData: ProjectForm; s
       <Textarea value={formData.thinking_process} onChange={(e) => setFormData({ ...formData, thinking_process: e.target.value })} placeholder="Describe the design thinking behind this project..." rows={3} maxLength={1000} />
     </div>
   </div>
-);
+  );
+};
 
 const ProjectsAdmin = () => {
   const [formData, setFormData] = useState<ProjectForm>(initialFormState);
