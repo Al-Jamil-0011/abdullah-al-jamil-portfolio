@@ -57,50 +57,44 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Cover Image */}
-      <div className="relative h-32 md:h-40 overflow-hidden">
+      {/* Cover Banner - Smooth & Consistent in Light & Dark */}
+      <div className="relative h-32 md:h-40 overflow-hidden bg-gradient-to-br from-slate-100 via-teal-50/40 to-slate-200/60 dark:from-slate-900/90 dark:via-slate-800/80 dark:to-slate-950">
         <motion.img
           src={profileBg}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          initial={{ scale: 1.1, filter: "blur(2px)" }}
+          className="absolute inset-0 w-full h-full object-cover opacity-20 dark:opacity-50 mix-blend-overlay dark:mix-blend-normal"
+          initial={{ scale: 1.05 }}
           animate={{
-            scale: isHovered ? 1.15 : 1.1,
-            filter: isHovered ? "blur(1px)" : "blur(2px)",
-            y: isHovered ? -5 : 0
+            scale: isHovered ? 1.1 : 1.05,
+            y: isHovered ? -3 : 0,
           }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         />
-        <motion.div className="absolute inset-0 bg-black/40" animate={{ opacity: isHovered ? 0.3 : 0.4 }} transition={{ duration: 0.4 }} />
-        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
-        <motion.div
-          className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')]"
-          animate={{ opacity: isHovered ? 0.5 : 0.3 }}
-          transition={{ duration: 0.4 }}
-        />
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.4 }}
-        />
+        {/* Subtle geometric pattern overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(currentColor_1px,transparent_1px)] opacity-[0.04] dark:opacity-[0.08] [background-size:16px_16px]" />
+        
+        {/* Smooth transition fade to card background */}
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
+        
+        {/* Ambient top light */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/5" />
       </div>
 
       {/* Avatar */}
       <div className="relative -mt-14 md:-mt-16 flex-row flex items-start justify-center">
         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, duration: 0.4 }} className="relative">
-          <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden border-4 border-card shadow-xl">
+          <div className="w-24 h-24 md:w-28 md:h-28 rounded-2xl overflow-hidden border-4 border-card shadow-lg bg-card">
             <img src={abdullahPortrait} alt={name} className="w-full h-full object-cover" />
           </div>
-          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-3 border-card" />
+          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-card shadow-sm ring-2 ring-emerald-500/20" />
         </motion.div>
       </div>
 
       {/* Info */}
       <div className="p-5 md:p-6 text-center flex-1 flex flex-col py-[23px]">
         <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3, duration: 0.4 }}>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground mb-1">{name}</h2>
-          <p className="text-primary font-medium mb-4 text-base">{title}</p>
+          <h2 className="text-xl md:text-2xl font-bold text-foreground mb-1 tracking-tight">{name}</h2>
+          <p className="text-primary font-medium mb-4 text-sm sm:text-base">{title}</p>
         </motion.div>
 
         {/* Social Links */}
@@ -113,7 +107,7 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="social-icon-btn p-2.5 rounded-xl bg-secondary/50 text-muted-foreground transition-all duration-300"
+                className="p-2.5 rounded-xl bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary border border-border/50 transition-all duration-200"
                 aria-label={social.platform}
               >
                 <IconComponent className="w-4 h-4" />
@@ -124,7 +118,7 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
             href="https://github.com/Al-Jamil-0011"
             target="_blank"
             rel="noopener noreferrer"
-            className="social-icon-btn p-2.5 rounded-xl bg-secondary/50 text-muted-foreground transition-all duration-300"
+            className="p-2.5 rounded-xl bg-secondary/60 text-muted-foreground hover:text-foreground hover:bg-secondary border border-border/50 transition-all duration-200"
             aria-label="GitHub"
           >
             <Github className="w-4 h-4" />
@@ -133,13 +127,21 @@ const ProfileCard = ({ onContactClick }: ProfileCardProps) => {
 
         <div className="flex-1" />
 
-        {/* Action Buttons */}
-        <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5, duration: 0.4 }} className="grid grid-cols-2 gap-3 pt-4 border-t border-border/50">
-          <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="btn-gradient-animated flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium">
-            <FileText className="w-4 h-4" />
+        {/* Action Buttons - Cohesive & Premium */}
+        <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5, duration: 0.4 }} className="grid grid-cols-2 gap-3 pt-4 border-t border-border/60">
+          <a
+            href={resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-medium border border-border/80 bg-secondary/70 hover:bg-secondary text-foreground transition-all duration-200 shadow-sm active:scale-95"
+          >
+            <FileText className="w-4 h-4 text-muted-foreground" />
             <span>Resume</span>
           </a>
-          <button onClick={onContactClick} className="btn-gradient-primary flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium">
+          <button
+            onClick={onContactClick}
+            className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-sm font-medium bg-primary text-primary-foreground hover:opacity-90 transition-all duration-200 shadow-sm active:scale-95"
+          >
             <Mail className="w-4 h-4" />
             <span>Contact</span>
           </button>

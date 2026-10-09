@@ -24,12 +24,12 @@ type Skill = {
 };
 
 const SKILLS: Skill[] = [
-  { name: "UX/UI Design", percentage: 90, color: "#22D3EE", icon: Palette },
-  { name: "Graphic Design", percentage: 40, color: "#A78BFA", icon: Sparkles },
-  { name: "Frontend Development", percentage: 80, color: "#60A5FA", icon: CodeXml },
-  { name: "Python", percentage: 50, color: "#F59E0B", icon: Terminal },
-  { name: "AI / Machine Learning", percentage: 65, color: "#2DD4BF", icon: Brain },
-  { name: "Backend Development", percentage: 40, color: "#F472B6", icon: Server },
+  { name: "UX/UI Design", percentage: 90, color: "#0D9488", icon: Palette },
+  { name: "Graphic Design", percentage: 40, color: "#7C3AED", icon: Sparkles },
+  { name: "Frontend Development", percentage: 80, color: "#2563EB", icon: CodeXml },
+  { name: "Python", percentage: 50, color: "#D97706", icon: Terminal },
+  { name: "AI / Machine Learning", percentage: 65, color: "#059669", icon: Brain },
+  { name: "Backend Development", percentage: 40, color: "#DB2777", icon: Server },
 ];
 
 const SOFT_SKILLS = [
@@ -107,7 +107,7 @@ const Ring = ({
           cy={size / 2}
           r={radius}
           stroke="hsl(var(--border))"
-          strokeOpacity={0.35}
+          strokeOpacity={0.7}
           strokeWidth={stroke}
           fill="none"
         />
@@ -120,7 +120,7 @@ const Ring = ({
           strokeLinecap="round"
           fill="none"
           strokeDasharray={circumference}
-          style={{ strokeDashoffset: dashOffset, filter: `drop-shadow(0 0 6px ${color}55)` }}
+          style={{ strokeDashoffset: dashOffset }}
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center flex-col gap-0.5">

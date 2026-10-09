@@ -1,121 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* Dark Dashboard Portfolio Design System - Abdullah Al Jamil
    Inspired by modern dashboard UI with glassmorphism */
 
 @layer base {
   :root {
-    /* Light mode - Premium clean design */
-    --background: 220 20% 96%;
-    --foreground: 220 30% 12%;
+    /* Swiss Editorial Light Mode */
+    --background: 220 20% 98%;
+    --foreground: 224 25% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 30% 12%;
+    --card-foreground: 224 25% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 30% 12%;
+    --popover-foreground: 224 25% 10%;
 
-    /* Darker teal primary for light mode contrast */
-    --primary: 179 80% 35%;
+    --primary: 224 25% 10%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 91%;
-    --secondary-foreground: 220 25% 18%;
+    --secondary: 220 15% 94%;
+    --secondary-foreground: 224 25% 15%;
 
-    --muted: 220 12% 88%;
-    --muted-foreground: 220 12% 40%;
+    --muted: 220 12% 92%;
+    --muted-foreground: 220 10% 42%;
 
-    /* Accent matches primary */
-    --accent: 179 80% 35%;
+    /* Refined Swiss Teal Accent */
+    --accent: 175 80% 36%;
     --accent-foreground: 0 0% 100%;
 
-    --highlight: 179 80% 35%;
+    --highlight: 175 80% 36%;
     --highlight-foreground: 0 0% 100%;
 
-    --destructive: 0 65% 50%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 85%;
-    --input: 220 15% 85%;
-    --ring: 179 80% 35%;
+    --border: 220 14% 88%;
+    --input: 220 14% 88%;
+    --ring: 224 25% 10%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    --sidebar-background: 220 15% 94%;
-    --sidebar-foreground: 220 25% 20%;
-    --sidebar-primary: 179 80% 35%;
+    --sidebar-background: 220 15% 96%;
+    --sidebar-foreground: 224 25% 15%;
+    --sidebar-primary: 224 25% 10%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 15% 89%;
-    --sidebar-accent-foreground: 220 25% 18%;
-    --sidebar-border: 220 15% 85%;
-    --sidebar-ring: 179 80% 35%;
-    
-    /* Gradient shadow tokens */
-    --primary-glow: 179 80% 35% / 0.3;
-    --primary-shadow: 0 8px 32px -8px hsl(179 80% 35% / 0.25);
+    --sidebar-accent: 220 15% 91%;
+    --sidebar-accent-foreground: 224 25% 15%;
+    --sidebar-border: 220 14% 88%;
+    --sidebar-ring: 224 25% 10%;
 
-    /* Glassmorphism tokens for light mode */
+    --primary-glow: 175 80% 36% / 0.15;
+    --primary-shadow: 0 8px 30px -8px hsl(224 25% 10% / 0.08);
+
     --glass-background: 0 0% 100% / 0.85;
-    --glass-border: 220 15% 12% / 0.08;
-    --glass-glow: 179 80% 35% / 0.15;
+    --glass-border: 220 14% 10% / 0.08;
+    --glass-glow: 175 80% 36% / 0.1;
   }
 
   .dark {
-    /* Dark mode - Primary theme */
-    --background: 220 25% 8%;
-    --foreground: 200 15% 90%;
+    /* Swiss Editorial Dark Mode (Default) */
+    --background: 224 18% 7%;
+    --foreground: 210 20% 98%;
 
-    --card: 220 20% 12%;
-    --card-foreground: 200 15% 90%;
+    --card: 224 16% 11%;
+    --card-foreground: 210 20% 98%;
 
-    --popover: 220 25% 10%;
-    --popover-foreground: 200 15% 90%;
+    --popover: 224 16% 11%;
+    --popover-foreground: 210 20% 98%;
 
-    /* AI Cyan Primary #93FFFE */
-    --primary: 179 99% 79%;
-    --primary-foreground: 220 25% 8%;
+    --primary: 210 20% 98%;
+    --primary-foreground: 224 18% 7%;
 
-    --secondary: 220 18% 16%;
-    --secondary-foreground: 200 15% 85%;
+    --secondary: 224 14% 15%;
+    --secondary-foreground: 210 16% 90%;
 
-    --muted: 220 15% 18%;
-    --muted-foreground: 200 10% 55%;
+    --muted: 224 14% 15%;
+    --muted-foreground: 218 14% 65%;
 
-    /* Matching accent to primary */
-    --accent: 179 99% 79%;
-    --accent-foreground: 220 25% 8%;
+    /* Refined Swiss Teal Accent */
+    --accent: 175 75% 48%;
+    --accent-foreground: 224 18% 7%;
 
-    --highlight: 179 99% 79%;
-    --highlight-foreground: 220 25% 8%;
+    --highlight: 175 75% 48%;
+    --highlight-foreground: 224 18% 7%;
 
-    --destructive: 0 62% 45%;
+    --destructive: 0 62% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 18%;
-    --input: 220 15% 20%;
-    --ring: 179 99% 79%;
+    --border: 224 13% 19%;
+    --input: 224 13% 19%;
+    --ring: 175 75% 48%;
 
-    --sidebar-background: 220 22% 10%;
-    --sidebar-foreground: 200 15% 85%;
-    --sidebar-primary: 179 99% 79%;
-    --sidebar-primary-foreground: 220 25% 8%;
-    --sidebar-accent: 220 18% 16%;
-    --sidebar-accent-foreground: 200 15% 85%;
-    --sidebar-border: 220 15% 18%;
-    --sidebar-ring: 179 99% 79%;
+    --sidebar-background: 224 18% 9%;
+    --sidebar-foreground: 210 16% 90%;
+    --sidebar-primary: 210 20% 98%;
+    --sidebar-primary-foreground: 224 18% 7%;
+    --sidebar-accent: 224 14% 15%;
+    --sidebar-accent-foreground: 210 16% 90%;
+    --sidebar-border: 224 13% 19%;
+    --sidebar-ring: 175 75% 48%;
 
-    /* Glassmorphism tokens */
-    --glass-background: 220 25% 12% / 0.8;
-    --glass-border: 200 15% 90% / 0.08;
-    --glass-glow: 179 99% 79% / 0.2;
-    
-    /* Gradient shadow tokens */
-    --primary-glow: 179 99% 79% / 0.5;
-    --primary-shadow: 0 8px 32px -8px hsl(179 99% 79% / 0.4);
+    --glass-background: 224 16% 11% / 0.85;
+    --glass-border: 210 20% 98% / 0.08;
+    --glass-glow: 175 75% 48% / 0.12;
+
+    --primary-glow: 175 75% 48% / 0.25;
+    --primary-shadow: 0 12px 36px -10px hsl(224 25% 0% / 0.45);
   }
 }
 
@@ -173,13 +167,18 @@
 }
 
 @layer components {
-  /* Glassmorphism card with AI cyan glow */
+  /* Glassmorphism card - Pure and consistent in Light & Dark */
   .glass-card {
-    @apply bg-card/80 backdrop-blur-xl rounded-2xl border border-border/50;
+    @apply bg-card rounded-2xl border border-border/80 transition-all duration-300;
     box-shadow: 
-      0 4px 24px -4px hsl(220 25% 0% / 0.3),
-      0 0 0 1px hsl(var(--glass-border)),
-      inset 0 1px 0 0 hsl(179 99% 79% / 0.05);
+      0 1px 3px 0 hsl(220 20% 10% / 0.04),
+      0 6px 24px -4px hsl(220 20% 10% / 0.06);
+  }
+
+  .dark .glass-card {
+    box-shadow: 
+      0 4px 24px -4px hsl(224 25% 0% / 0.4),
+      0 0 0 1px hsl(var(--border) / 0.4);
   }
 
   .glass-card-hover {
@@ -187,29 +186,30 @@
   }
 
   .glass-card-hover:hover {
-    @apply border-primary/40;
+    @apply border-primary/50;
     box-shadow: 
-      0 8px 40px -8px hsl(179 99% 79% / 0.25),
-      0 0 0 1px hsl(179 99% 79% / 0.15),
-      inset 0 1px 0 0 hsl(179 99% 79% / 0.1);
+      0 12px 32px -8px hsl(var(--primary) / 0.15),
+      0 0 0 1px hsl(var(--primary) / 0.1);
     transform: translateY(-2px);
   }
 
-  /* Stat card styling with subtle glow */
+  /* Stat card styling - Clean & High Contrast */
   .stat-card {
     @apply glass-card p-4 md:p-5 transition-all duration-300;
   }
 
   .stat-card:hover {
     box-shadow: 
-      0 8px 32px -8px hsl(179 99% 79% / 0.2),
-      inset 0 1px 0 0 hsl(179 99% 79% / 0.08);
+      0 8px 24px -6px hsl(var(--primary) / 0.12);
   }
 
   .stat-number {
     font-family: 'Space Grotesk', system-ui, sans-serif;
-    @apply text-2xl md:text-3xl font-bold text-primary;
-    text-shadow: 0 0 20px hsl(179 99% 79% / 0.3);
+    @apply text-2xl md:text-3xl font-bold text-foreground;
+  }
+
+  .dark .stat-number {
+    @apply text-primary;
   }
 
   .stat-label {
@@ -222,75 +222,46 @@
   }
 
   .skill-card:hover {
-    @apply border-primary/40 bg-card/90;
+    @apply border-primary/40 bg-card;
     transform: translateY(-2px);
     box-shadow: 
-      0 8px 32px -8px hsl(179 99% 79% / 0.25),
-      0 0 20px hsl(179 99% 79% / 0.1);
+      0 8px 24px -6px hsl(var(--primary) / 0.15);
   }
 
-  /* Social icon button with AI cyan glow */
+  /* Social icon button */
   .social-icon-btn {
     @apply relative overflow-hidden transition-all duration-300;
   }
 
   .social-icon-btn:hover {
-    @apply bg-primary/15 text-primary;
-    transform: scale(1.1);
-    box-shadow: 
-      0 0 25px hsl(179 99% 79% / 0.4),
-      0 0 50px hsl(179 99% 79% / 0.2);
+    @apply bg-secondary text-primary border-primary/30;
+    transform: scale(1.08);
   }
 
-  /* Animated gradient buttons with AI cyan */
+  /* Adaptive button variants */
   .btn-gradient-animated {
-    @apply relative bg-secondary/50 text-muted-foreground overflow-hidden;
-    background: linear-gradient(135deg, hsl(220 18% 20%) 0%, hsl(220 18% 16%) 100%);
-    transition: all 0.3s ease;
-  }
-
-  .btn-gradient-animated::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, hsl(179 99% 79% / 0.2) 0%, hsl(190 90% 70% / 0.15) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    @apply relative bg-secondary hover:bg-secondary/80 text-foreground border border-border/80 rounded-xl font-medium transition-all duration-200 overflow-hidden shadow-sm;
   }
 
   .btn-gradient-animated:hover {
-    @apply text-foreground;
-    transform: translateY(-2px);
-    box-shadow: 
-      0 8px 32px -8px hsl(179 99% 79% / 0.4),
-      0 0 20px hsl(179 99% 79% / 0.2);
-  }
-
-  .btn-gradient-animated:hover::before {
-    opacity: 1;
+    @apply border-foreground/20 text-foreground;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -2px hsl(0 0% 0% / 0.08);
   }
 
   .btn-gradient-animated:active {
     transform: translateY(0) scale(0.98);
   }
 
-  /* Primary gradient button with AI cyan */
+  /* Primary action button */
   .btn-gradient-primary {
-    @apply relative overflow-hidden;
-    background: linear-gradient(135deg, hsl(179 99% 79%) 0%, hsl(190 95% 70%) 50%, hsl(179 99% 79%) 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 3s ease infinite;
-    @apply text-primary-foreground font-semibold;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 20px -4px hsl(179 99% 79% / 0.4);
+    @apply relative bg-primary text-primary-foreground rounded-xl font-medium transition-all duration-200 overflow-hidden shadow-sm;
   }
 
   .btn-gradient-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 
-      0 8px 32px -8px hsl(179 99% 79% / 0.6),
-      0 0 30px hsl(179 99% 79% / 0.3);
-    animation: gradientShiftFast 1s ease infinite;
+    @apply opacity-90;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px -2px hsl(var(--primary) / 0.35);
   }
 
   .btn-gradient-primary:active {
@@ -307,18 +278,55 @@
     50% { background-position: 100% 50%; }
   }
 
+  /* Swiss Editorial Design System Foundation */
+  .container-editorial {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .swiss-card {
+    @apply bg-card text-card-foreground rounded-2xl border border-border/80 transition-all duration-300;
+    box-shadow: 0 4px 20px -6px hsl(0 0% 0% / 0.15);
+  }
+
+  .swiss-card:hover {
+    @apply border-border;
+    box-shadow: 0 16px 40px -12px hsl(0 0% 0% / 0.25);
+    transform: translateY(-2px);
+  }
+
+  .swiss-badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium tracking-wider uppercase border border-border/80 bg-secondary/60 text-muted-foreground;
+  }
+
+  .section-eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-[0.2em] text-accent;
+  }
+
+  .editorial-lead {
+    @apply text-base md:text-lg lg:text-xl text-muted-foreground font-normal leading-relaxed;
+  }
+
+  .btn-editorial-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-medium text-sm transition-all duration-200 hover:opacity-90 active:scale-[0.98] shadow-sm;
+  }
+
+  .btn-editorial-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-border/90 bg-card/60 backdrop-blur-sm text-foreground font-medium text-sm transition-all duration-200 hover:bg-secondary hover:border-foreground/30 active:scale-[0.98];
+  }
+
   /* Button variants with AI cyan glow */
   .btn-primary {
     @apply bg-primary text-primary-foreground px-6 py-3 rounded-xl font-semibold
            transition-all duration-300 ease-out;
-    box-shadow: 0 4px 20px -4px hsl(179 99% 79% / 0.4);
+    box-shadow: 0 4px 20px -4px hsl(var(--primary) / 0.25);
   }
 
   .btn-primary:hover {
-    @apply brightness-110;
-    box-shadow: 
-      0 8px 32px -8px hsl(179 99% 79% / 0.5),
-      0 0 20px hsl(179 99% 79% / 0.25);
+    @apply opacity-90;
     transform: translateY(-1px);
   }
 
@@ -328,8 +336,7 @@
   }
 
   .btn-outline:hover {
-    @apply bg-primary/10 border-primary/50 text-primary;
-    box-shadow: 0 0 20px hsl(179 99% 79% / 0.15);
+    @apply bg-secondary/80 border-border text-foreground;
   }
 
   .btn-ghost {
@@ -338,7 +345,7 @@
   }
 
   .btn-ghost:hover {
-    @apply bg-primary/10 text-primary;
+    @apply bg-secondary text-foreground;
   }
 
   /* Text utilities with AI cyan gradient */
@@ -419,41 +426,35 @@
            transition-all duration-200;
   }
 
-  /* Premium custom scrollbar with AI cyan */
+  /* Clean, subtle scrollbar */
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: hsl(179 99% 79% / 0.3) hsl(220 18% 16%);
+    scrollbar-color: hsl(var(--border) / 0.6) transparent;
   }
 
   .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
+    width: 5px;
+    height: 5px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-secondary/30 rounded-full;
+    background: transparent;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply rounded-full;
-    background: linear-gradient(180deg, hsl(179 99% 79% / 0.5) 0%, hsl(179 99% 79% / 0.2) 100%);
-    border: 2px solid transparent;
-    background-clip: padding-box;
+    @apply bg-border/50 hover:bg-border rounded-full;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, hsl(179 99% 79% / 0.7) 0%, hsl(179 99% 79% / 0.4) 100%);
-  }
-
-  /* Mobile bottom nav glass effect with AI cyan accent */
+  /* Mobile bottom nav - Theme-adaptive & clean */
   .mobile-bottom-nav {
-    @apply fixed bottom-0 left-0 right-0 z-50;
-    background: hsl(220 22% 10% / 0.92);
-    backdrop-filter: blur(20px);
+    @apply fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-xl border-t border-border/80;
     border-top-left-radius: 1.5rem;
     border-top-right-radius: 1.5rem;
-    box-shadow: 
-      0 -4px 24px -4px hsl(220 25% 0% / 0.4),
-      0 -1px 0 0 hsl(179 99% 79% / 0.1);
+    box-shadow: 0 -4px 20px -4px hsl(220 20% 10% / 0.06);
+  }
+
+  .dark .mobile-bottom-nav {
+    box-shadow: 0 -4px 24px -4px hsl(224 25% 0% / 0.4), 0 -1px 0 0 hsl(var(--border) / 0.4);
   }
 }
 

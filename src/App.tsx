@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AdminAuthProvider } from "@/hooks/use-admin-auth";
+import { ThemeProvider } from "@/hooks/use-theme";
+import HomePage from "./pages/HomePage";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
@@ -25,16 +27,17 @@ const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AdminAuthProvider>
-            <Routes>
-              {/* Default route redirects to /about */}
-              <Route path="/" element={<Navigate to="/about" replace />} />
-              
-              {/* SEO-friendly routes */}
-              <Route path="/about" element={<Index section="about" />} />
+        <ThemeProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AdminAuthProvider>
+              <Routes>
+                {/* Flagship Editorial Homepage */}
+                <Route path="/" element={<HomePage />} />
+                
+                {/* Dedicated Routes */}
+                <Route path="/about" element={<Index section="about" />} />
               <Route path="/resume" element={<Index section="resume" />} />
               <Route path="/projects" element={<Index section="projects" />} />
               <Route path="/blogs" element={<Index section="blogs" />} />
@@ -52,6 +55,7 @@ const App = () => (
             </Routes>
           </AdminAuthProvider>
         </BrowserRouter>
+        </ThemeProvider>
       </TooltipProvider>
     </QueryClientProvider>
   </HelmetProvider>

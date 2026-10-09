@@ -26,7 +26,7 @@ const Sidebar = ({ activeSection, onSectionChange }: SidebarProps) => {
       initial={{ x: -20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="fixed left-0 top-0 h-screen w-20 md:w-24 bg-card/50 backdrop-blur-xl border-r border-border/50 z-50 flex flex-col"
+      className="fixed left-0 top-0 h-screen w-20 md:w-24 bg-card/90 backdrop-blur-xl border-r border-border/70 z-50 flex flex-col shadow-sm"
       role="navigation"
       aria-label="Main sidebar navigation"
     >
@@ -34,21 +34,21 @@ const Sidebar = ({ activeSection, onSectionChange }: SidebarProps) => {
       <div className="p-4 flex justify-center">
         <button
           onClick={toggleTheme}
-          className="p-3 rounded-xl bg-secondary/50 text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-200"
+          className="p-3 rounded-xl bg-secondary/80 text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-200 border border-border/50 shadow-sm"
           aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           aria-pressed={theme === "dark"}
         >
           {theme === "dark" ? (
-            <Sun className="w-5 h-5" aria-hidden="true" />
+            <Sun className="w-5 h-5 text-amber-400" aria-hidden="true" />
           ) : (
-            <Moon className="w-5 h-5" aria-hidden="true" />
+            <Moon className="w-5 h-5 text-slate-700" aria-hidden="true" />
           )}
         </button>
       </div>
 
       {/* Navigation */}
       <ul
-        className="flex-1 px-2 list-none md:px-[11px] flex-col flex items-center justify-start gap-[8px] border-none rounded-md shadow-none overflow-y-auto custom-scrollbar"
+        className="flex-1 px-2 list-none md:px-[11px] flex-col flex items-center justify-start gap-[8px] border-none rounded-md shadow-none overflow-y-auto overflow-x-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         role="menubar"
       >
         {navItems.map((item) => (

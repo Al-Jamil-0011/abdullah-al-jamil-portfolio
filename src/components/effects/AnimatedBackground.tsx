@@ -161,26 +161,26 @@ const AnimatedBackground = () => {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      {/* Deep ambient glow orbs (very faint) */}
+      {/* Deep ambient glow orbs (dark mode only) */}
       <div
-        className="absolute -top-40 -left-40 h-[36rem] w-[36rem] rounded-full blur-3xl opacity-[0.10]"
+        className="hidden dark:block absolute -top-40 -left-40 h-[36rem] w-[36rem] rounded-full blur-3xl opacity-[0.08]"
         style={{
           background:
             "radial-gradient(circle at center, hsl(var(--primary)), transparent 65%)",
         }}
       />
       <div
-        className="absolute -bottom-40 -right-32 h-[34rem] w-[34rem] rounded-full blur-3xl opacity-[0.08]"
+        className="hidden dark:block absolute -bottom-40 -right-32 h-[34rem] w-[34rem] rounded-full blur-3xl opacity-[0.06]"
         style={{
           background:
             "radial-gradient(circle at center, hsl(190 95% 65%), transparent 65%)",
         }}
       />
 
-      {/* Constellation canvas */}
+      {/* Constellation canvas - graceful in dark mode, clean in light mode */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 h-full w-full opacity-70"
+        className="absolute inset-0 h-full w-full opacity-0 dark:opacity-60 transition-opacity duration-500"
       />
     </div>
   );

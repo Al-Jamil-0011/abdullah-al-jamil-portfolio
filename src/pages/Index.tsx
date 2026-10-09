@@ -156,8 +156,8 @@ const DashboardLayout = ({ section }: DashboardLayoutProps) => {
               <ProfileCard onContactClick={() => handleSectionChange("contact")} />
             </aside>
 
-            {/* Right Column - Content with custom scrollbar */}
-            <section className="custom-scrollbar lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto lg:pr-2">
+            {/* Right Column - Natural Document Content */}
+            <section className="w-full min-w-0">
               {renderContent()}
             </section>
           </div>
